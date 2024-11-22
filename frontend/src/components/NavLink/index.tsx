@@ -13,7 +13,8 @@ const NavLink: React.FC<NavLinkProps> = ({
   textColor,
   isLink = true,
 }) => {
-  const buttonPadding = "px-4 py-2 hover:bg-opacity-80 rounded-full";
+  const buttonPadding =
+    "px-3 py-1 text-sm sm:text-base sm:px-4 sm:py-2 hover:bg-opacity-80 rounded-full";
 
   return (
     <>
