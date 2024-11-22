@@ -19,7 +19,7 @@ const SummarizeForm = () => {
     }
 
     const submitPromise = api
-      .post("/summarize", { text })
+      .post("/summary", { text })
       .then((res) => {
         setSummarizedText(res.data.summary);
         toast.success("Summary generated!");
