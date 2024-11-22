@@ -1,8 +1,12 @@
 import "./App.css";
-import NavBar from "./components/NavBar";
+import SummarizeForm from "./components/SummarizeForm";
 
 function App() {
-  return <></>;
+  return (
+    <>
+      <SummarizeForm />
+    </>
+  );
 }
 
 export default App;
