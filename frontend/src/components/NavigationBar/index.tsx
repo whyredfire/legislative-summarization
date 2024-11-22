@@ -8,7 +8,7 @@ const NavigationBar: React.FC = () => {
         <div className="flex flex-row gap-6">
           <NavLink
             redirect="/login"
-            bgColor="bg-white"
+            bgColor="border border-black"
             textColor="text-black"
             text="Login"
           />
