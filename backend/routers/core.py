@@ -1,17 +1,12 @@
 from fastapi import APIRouter, HTTPException, File, UploadFile
-from pydantic import BaseModel
 
 from internal.utils import extractive_summary
+from schemas import raw_text
 
 core = APIRouter(
     prefix="/api",
     tags=["core"],
 )
-
-
-class raw_text(BaseModel):
-    text: str
-    summary_ratio: int | int = 0.3
 
 
 @core.post("/summary")
