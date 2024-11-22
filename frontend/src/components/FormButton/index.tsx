@@ -14,7 +14,7 @@ const FormButton: React.FC<FormButtonProps> = ({
   return (
     <>
       <button
-        className={`rounded-full px-6 py-3 w-fit text-${textColor} ${color} hover:bg-opacity-80`}
+        className={`w-fit rounded-full px-6 py-3 text-${textColor} ${color} hover:bg-opacity-80`}
         aria-label={text}
         type={buttonType}
       >

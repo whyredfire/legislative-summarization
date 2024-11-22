@@ -3,7 +3,7 @@ import NavLink from "../NavLink";
 const Footer = () => {
   return (
     <>
-      <footer className="text-center w-full py-8">
+      <footer className="w-full py-8 text-center">
         Made with ❤️ by{" "}
         <NavLink
           redirect="#!"

@@ -42,15 +42,15 @@ const SummarizeForm = () => {
   return (
     <>
       <form
-        className="flex flex-col gap-10 flex-grow justify-center items-center mx-10"
+        className="mx-10 flex flex-grow flex-col items-center justify-center gap-10"
         onSubmit={handleSubmit}
       >
-        <div className="flex flex-col sm:flex-row gap-8">
+        <div className="flex flex-col gap-8 sm:flex-row">
           <textarea
             name="summarize"
             id="summarize"
             placeholder="Write your text here"
-            className="min-h-60 max-h-[500px] focus:shadow-2xl w-full sm:w-[90%] md:w-[80%] lg:max-w-4xl p-4 border rounded-lg text-sm sm:text-base focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 resize-none"
+            className="max-h-[500px] min-h-60 w-full resize-none rounded-lg border p-4 text-sm focus:border-blue-500 focus:shadow-2xl focus:outline-none focus:ring-1 focus:ring-blue-500 sm:w-[90%] sm:text-base md:w-[80%] lg:max-w-4xl"
             rows={10}
             cols={200}
             spellCheck={false}
@@ -61,7 +61,7 @@ const SummarizeForm = () => {
             name="summarized"
             id="summarized"
             placeholder="Summarized text"
-            className="min-h-60 text-gray-500 max-h-[500px] w-full sm:w-[90%] md:w-[80%] lg:max-w-4xl p-4 border rounded-lg text-sm sm:text-base focus:outline-none resize-none"
+            className="max-h-[500px] min-h-60 w-full resize-none rounded-lg border p-4 text-sm text-gray-500 focus:outline-none sm:w-[90%] sm:text-base md:w-[80%] lg:max-w-4xl"
             rows={10}
             cols={200}
             spellCheck={false}
