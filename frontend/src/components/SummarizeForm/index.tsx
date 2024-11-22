@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { api } from "../../api/api";
 import { toast } from "sonner";
+import FormButton from "../FormButton";
 
 const SummarizeForm = () => {
   const [text, setText] = useState<string>("");
@@ -69,13 +70,12 @@ const SummarizeForm = () => {
               value={summarizedText}
             />
           </div>
-          <button
-            type="submit"
-            aria-label="submit"
-            className="bg-blue-600 text-white rounded-full px-6 py-3 w-fit hover:bg-blue-700"
-          >
-            Summarize
-          </button>
+          <FormButton
+            text="Summarize"
+            buttonType="submit"
+            color="bg-blue-700"
+            textColor="white"
+          />
         </form>
       </div>
     </>
