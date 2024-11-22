@@ -5,7 +5,7 @@ from routers import core
 
 app = FastAPI()
 
-origins = ["https://localhost:5173"]
+origins = ["*"]
 
 app.add_middleware(
     CORSMiddleware,

@@ -1,8 +1,18 @@
 import "./App.css";
-import NavBar from "./components/NavBar";
+
+import { Toaster } from "sonner";
+
+import SummarizeForm from "./components/SummarizeForm";
+import NavigationBar from "./components/NavigationBar";
 
 function App() {
-  return <></>;
+  return (
+    <>
+      <Toaster richColors position="top-center" expand={true} />
+      <NavigationBar />
+      <SummarizeForm />
+    </>
+  );
 }
 
 export default App;
