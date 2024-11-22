@@ -4,6 +4,7 @@ import { toast } from "sonner";
 
 const SummarizeForm = () => {
   const [text, setText] = useState<string>("");
+  const [summarizedText, setSummarizedText] = useState<string>("");
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setText(e.target.value);
@@ -20,14 +21,22 @@ const SummarizeForm = () => {
     const submitPromise = api.post("/summarize", { text });
 
     toast.promise(submitPromise, {
-      loading: "Submitting form...",
-      success: (res) => {
+      loading: "Generating summary...",
+      success: async (res) => {
         console.log(res.data.summary);
-        return "Form submitted successfully!";
+        try {
+          const response = await api.get("/summarize");
+          setSummarizedText(response.data.summary);
+          return "Summary generated!";
+        } catch (err) {
+          console.log("Failed to fetch summary:", err);
+          toast.error("Failed to fetch summary.");
+          return;
+        }
       },
       error: (err) => {
-        console.error("Error submitting the form:", err);
-        return "Error submitting the form.";
+        console.error("Error while generating summary:", err);
+        return "Error while generating summary.";
       },
     });
   };
@@ -39,21 +48,34 @@ const SummarizeForm = () => {
           className="flex flex-col gap-10 h-screen justify-center items-center mx-10"
           onSubmit={handleSubmit}
         >
-          <textarea
-            name="summarize"
-            id="summarize"
-            placeholder="Write your text here"
-            className="h-48 min-h-48 max-h-[500px] w-full sm:w-[90%] md:w-[80%] lg:max-w-4xl p-4 text-lg border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-            rows={10}
-            cols={200}
-            spellCheck={false}
-            value={text}
-            onChange={handleChange}
-          />
+          <div className="flex flex-col sm:flex-row gap-8">
+            <textarea
+              name="summarize"
+              id="summarize"
+              placeholder="Write your text here"
+              className="min-h-60 max-h-[500px] w-full sm:w-[90%] md:w-[80%] lg:max-w-4xl p-4 border rounded-lg text-sm sm:text-base focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 resize-none"
+              rows={10}
+              cols={200}
+              spellCheck={false}
+              value={text}
+              onChange={handleChange}
+            />
+            <textarea
+              name="summarized"
+              id="summarized"
+              placeholder="Summarized text"
+              className="min-h-60 max-h-[500px] w-full sm:w-[90%] md:w-[80%] lg:max-w-4xl p-4 border rounded-lg text-sm sm:text-base focus:outline-none resize-none"
+              rows={10}
+              cols={200}
+              spellCheck={false}
+              readOnly={true}
+              value={summarizedText}
+            />
+          </div>
           <button
             type="submit"
             aria-label="submit"
-            className="bg-blue-600 text-white rounded-full px-6 py-3 w-fit hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200"
+            className="bg-blue-600 text-white rounded-full px-6 py-3 w-fit hover:bg-blue-700"
           >
             Summarize
           </button>
