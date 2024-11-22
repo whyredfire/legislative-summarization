@@ -1,5 +1,3 @@
-import "./App.css";
-
 import { Toaster } from "sonner";
 
 import SummarizeForm from "./components/SummarizeForm";
