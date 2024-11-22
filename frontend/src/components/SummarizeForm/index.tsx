@@ -50,7 +50,7 @@ const SummarizeForm = () => {
             name="summarize"
             id="summarize"
             placeholder="Write your text here"
-            className="min-h-60 max-h-[500px] w-full sm:w-[90%] md:w-[80%] lg:max-w-4xl p-4 border rounded-lg text-sm sm:text-base focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 resize-none"
+            className="min-h-60 max-h-[500px] focus:shadow-2xl w-full sm:w-[90%] md:w-[80%] lg:max-w-4xl p-4 border rounded-lg text-sm sm:text-base focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 resize-none"
             rows={10}
             cols={200}
             spellCheck={false}
