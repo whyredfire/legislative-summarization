@@ -1,34 +1,37 @@
 import { useState } from "react";
 import { api } from "../../api/api";
+import { toast } from "sonner";
 
-interface SummarizeFormProps {
-  text: string;
-}
-
-const SummarizeForm: React.FC<SummarizeFormProps> = () => {
+const SummarizeForm = () => {
   const [text, setText] = useState<string>("");
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setText(e.target.value);
-    console.log(e.target.value);
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!text.trim()) {
-      console.error("Input text cannot be empty.");
+      toast.error("Input text cannot be empty.");
       return;
     }
 
-    try {
-      const res = await api.post("/summarize", { text });
-      console.log(res.data.summary);
-      console.log("Form submitted successfully");
-    } catch (err) {
-      console.error("Error submitting the form:", err);
-    }
+    const submitPromise = api.post("/summarize", { text });
+
+    toast.promise(submitPromise, {
+      loading: "Submitting form...",
+      success: (res) => {
+        console.log(res.data.summary);
+        return "Form submitted successfully!";
+      },
+      error: (err) => {
+        console.error("Error submitting the form:", err);
+        return "Error submitting the form.";
+      },
+    });
   };
+
   return (
     <>
       <div>
