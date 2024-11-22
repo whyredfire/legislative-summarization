@@ -3,6 +3,7 @@ interface NavLinkProps {
   bgColor: string;
   text: string;
   textColor: string;
+  isLink?: boolean;
 }
 
 const NavLink: React.FC<NavLinkProps> = ({
@@ -10,12 +11,15 @@ const NavLink: React.FC<NavLinkProps> = ({
   bgColor,
   text,
   textColor,
+  isLink = true,
 }) => {
+  const buttonPadding = "px-4 py-2 hover:bg-opacity-80 rounded-full";
+
   return (
     <>
       <a
         href={redirect}
-        className={`${bgColor} ${textColor} px-4 py-2 hover:bg-opacity-80 rounded-full`}
+        className={`${bgColor} ${textColor} ${isLink ? buttonPadding : ""}`}
         aria-label={text}
       >
         {text}

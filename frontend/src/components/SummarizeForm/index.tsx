@@ -41,43 +41,41 @@ const SummarizeForm = () => {
 
   return (
     <>
-      <div>
-        <form
-          className="flex flex-col gap-10 h-screen justify-center items-center mx-10"
-          onSubmit={handleSubmit}
-        >
-          <div className="flex flex-col sm:flex-row gap-8">
-            <textarea
-              name="summarize"
-              id="summarize"
-              placeholder="Write your text here"
-              className="min-h-60 max-h-[500px] w-full sm:w-[90%] md:w-[80%] lg:max-w-4xl p-4 border rounded-lg text-sm sm:text-base focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 resize-none"
-              rows={10}
-              cols={200}
-              spellCheck={false}
-              value={text}
-              onChange={handleChange}
-            />
-            <textarea
-              name="summarized"
-              id="summarized"
-              placeholder="Summarized text"
-              className="min-h-60 text-gray-500 max-h-[500px] w-full sm:w-[90%] md:w-[80%] lg:max-w-4xl p-4 border rounded-lg text-sm sm:text-base focus:outline-none resize-none"
-              rows={10}
-              cols={200}
-              spellCheck={false}
-              readOnly={true}
-              value={summarizedText}
-            />
-          </div>
-          <FormButton
-            text="Summarize"
-            buttonType="submit"
-            color="bg-blue-700"
-            textColor="white"
+      <form
+        className="flex flex-col gap-10 flex-grow justify-center items-center mx-10"
+        onSubmit={handleSubmit}
+      >
+        <div className="flex flex-col sm:flex-row gap-8">
+          <textarea
+            name="summarize"
+            id="summarize"
+            placeholder="Write your text here"
+            className="min-h-60 max-h-[500px] w-full sm:w-[90%] md:w-[80%] lg:max-w-4xl p-4 border rounded-lg text-sm sm:text-base focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 resize-none"
+            rows={10}
+            cols={200}
+            spellCheck={false}
+            value={text}
+            onChange={handleChange}
           />
-        </form>
-      </div>
+          <textarea
+            name="summarized"
+            id="summarized"
+            placeholder="Summarized text"
+            className="min-h-60 text-gray-500 max-h-[500px] w-full sm:w-[90%] md:w-[80%] lg:max-w-4xl p-4 border rounded-lg text-sm sm:text-base focus:outline-none resize-none"
+            rows={10}
+            cols={200}
+            spellCheck={false}
+            readOnly={true}
+            value={summarizedText}
+          />
+        </div>
+        <FormButton
+          text="Summarize"
+          buttonType="submit"
+          color="bg-blue-700"
+          textColor="white"
+        />
+      </form>
     </>
   );
 };
