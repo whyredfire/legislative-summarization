@@ -61,7 +61,7 @@ const SummarizeForm = () => {
             name="summarized"
             id="summarized"
             placeholder="Summarized text"
-            className="max-h-[500px] min-h-60 w-full resize-none rounded-lg border p-4 text-sm text-gray-500 focus:outline-none sm:w-[90%] sm:text-base md:w-[80%] lg:max-w-4xl"
+            className="max-h-[500px] min-h-60 w-full cursor-context-menu resize-none rounded-lg border p-4 text-sm text-gray-500 focus:outline-none sm:w-[90%] sm:text-base md:w-[80%] lg:max-w-4xl"
             rows={10}
             cols={200}
             spellCheck={false}
