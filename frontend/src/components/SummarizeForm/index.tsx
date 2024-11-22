@@ -22,14 +22,21 @@ const SummarizeForm = () => {
     const submitPromise = api
       .post("/summary", { text })
       .then((res) => {
-        if (res.data && res.data.data.summary) {
-          setSummarizedText(res.data.data.summary);
-        } else {
-          console.error("Unexpected response structure:", res.data);
+        try {
+          if (res.data && res.data.data.summary) {
+            setSummarizedText(res.data.data.summary);
+          } else {
+            console.error("Unexpected response structure:", res.data);
+            throw new Error("Invalid response format.");
+          }
+        } catch (error) {
+          console.error("Error while processing response:", error);
+          throw error;
         }
       })
       .catch((err) => {
         console.error("Error while submitting text:", err);
+        throw err;
       });
 
     toast.promise(submitPromise, {
