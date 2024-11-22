@@ -18,26 +18,21 @@ const SummarizeForm = () => {
       return;
     }
 
-    const submitPromise = api.post("/summarize", { text });
+    const submitPromise = api
+      .post("/summarize", { text })
+      .then((res) => {
+        setSummarizedText(res.data.summary);
+        toast.success("Summary generated!");
+      })
+      .catch((err) => {
+        console.error("Error while generating summary:", err);
+        toast.error("Error while generating summary.");
+      });
 
     toast.promise(submitPromise, {
       loading: "Generating summary...",
-      success: async (res) => {
-        console.log(res.data.summary);
-        try {
-          const response = await api.get("/summarize");
-          setSummarizedText(response.data.summary);
-          return "Summary generated!";
-        } catch (err) {
-          console.log("Failed to fetch summary:", err);
-          toast.error("Failed to fetch summary.");
-          return;
-        }
-      },
-      error: (err) => {
-        console.error("Error while generating summary:", err);
-        return "Error while generating summary.";
-      },
+      success: "Summary generated!",
+      error: "Error while generating summary.",
     });
   };
 
