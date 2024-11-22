@@ -36,14 +36,14 @@ const SummarizeForm = () => {
     <>
       <div>
         <form
-          className="flex flex-col gap-10 h-screen justify-center items-center"
+          className="flex flex-col gap-10 h-screen justify-center items-center mx-10"
           onSubmit={handleSubmit}
         >
           <textarea
             name="summarize"
             id="summarize"
             placeholder="Write your text here"
-            className="h-48 max-h-[500px] min-h-48 max-w-4xl p-4 text-lg border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="h-48 min-h-48 max-h-[500px] w-full sm:w-[90%] md:w-[80%] lg:max-w-4xl p-4 text-lg border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             rows={10}
             cols={200}
             spellCheck={false}
