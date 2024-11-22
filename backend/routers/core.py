@@ -11,7 +11,7 @@ core = APIRouter(
 
 class raw_text(BaseModel):
     text: str
-    # summary_ratio: int
+    summary_ratio: int | int = 0.3
 
 
 @core.post("/summary")
@@ -20,5 +20,5 @@ async def get_summary(inputs: raw_text):
         raise HTTPException(status_code=422, detail="Missing input text.")
 
     summary = extractive_summary(inputs.text)
-    response = {"data": {"summary": summary}}
+    response = {"data": {"summary": summary, "summary_ratio": inputs.summary_ratio}}
     return response
