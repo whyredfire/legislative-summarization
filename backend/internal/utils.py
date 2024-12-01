@@ -10,9 +10,49 @@ def extractive_summary(text, summary_ratio=0.3):
     if summary_length <= 0:
         summary_length = 1
 
+    custom_stopwords = set(
+        [
+            # action verbs
+            "shall",
+            "may",
+            "must",
+            "prohibits",
+            "requires",
+            # quantifiers
+            "percentage",
+            "amount",
+            "number",
+            "years",
+            "dollars",
+            # expressions
+            "immediately",
+            "forthwith",
+            "within",
+            "on",
+            "before",
+            "effective",
+            "date",
+            # conditionals
+            "provided",
+            "if",
+            "unless",
+            "subject",
+            "in",
+            "event",
+            # negation words
+            "not",
+            "no",
+            "without",
+            "except",
+            "neither",
+        ]
+    )
+
+    stopwords = set(nltk.corpus.stopwords.words("english")).union(custom_stopwords)
+
     word_frequencies = {}
     for word in nltk.word_tokenize(text):
-        if word.lower() not in nltk.corpus.stopwords.words("english"):
+        if word.lower() not in stopwords:
             if word.lower() not in word_frequencies:
                 word_frequencies[word.lower()] = 1
             else:
@@ -36,8 +76,5 @@ def extractive_summary(text, summary_ratio=0.3):
         num_sentences, sentence_scores, key=sentence_scores.get
     )
     summary = " ".join(summary_sentences)
-
-    sentences = nltk.sent_tokenize(text)
-    num_sentences = len(sentences)
 
     return summary
