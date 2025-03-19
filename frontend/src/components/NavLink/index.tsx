@@ -1,3 +1,7 @@
+import { cn } from "../../lib/utils";
+
+import { motion } from "framer-motion";
+
 interface NavLinkProps {
   redirect: string;
   bgColor: string;
@@ -13,18 +17,22 @@ const NavLink: React.FC<NavLinkProps> = ({
   textColor,
   isLink = true,
 }) => {
-  const buttonPadding =
-    "px-3 py-1 text-sm sm:text-base sm:px-4 sm:py-2 hover:bg-opacity-80 rounded-full";
-
   return (
     <>
-      <a
+      <motion.a
+        whileHover={{
+          className: "bg-opacity-80",
+        }}
         href={redirect}
-        className={`${bgColor} ${textColor} ${isLink ? buttonPadding : ""}`}
+        className={cn(
+          bgColor,
+          textColor,
+          isLink && "self-center rounded-full px-4 py-2 text-sm",
+        )}
         aria-label={text}
       >
         {text}
-      </a>
+      </motion.a>
     </>
   );
 };

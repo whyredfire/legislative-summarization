@@ -7,14 +7,14 @@ import Footer from "./components/Footer/Footer";
 function App() {
   return (
     <>
-      <Toaster richColors position="top-center" expand={true} />
-      <div className="flex h-screen flex-col">
+      <main className="flex h-screen flex-col">
         <NavigationBar />
-        <div className="mt-8 flex flex-grow items-center justify-center">
+        <section className="mt-8 flex flex-grow items-center justify-center">
           <SummarizeForm />
-        </div>
+        </section>
         <Footer />
-      </div>
+      </main>
+      <Toaster richColors position="top-center" expand={true} />
     </>
   );
 }
