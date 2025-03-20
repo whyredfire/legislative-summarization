@@ -7,8 +7,6 @@ from routers import core
 
 app = FastAPI()
 
-origins = ["*"]
-
 app.add_middleware(
     CORSMiddleware,
     allow_origin_regex=".*",
