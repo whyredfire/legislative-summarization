@@ -20,8 +20,8 @@ const SummarizeForm = () => {
     }
 
     try {
-      const response = await api.post("/summary", { text });
-      const summary = response?.data?.data?.summary;
+      const response = await api.post("/summary/extractive", { text });
+      const summary = response?.data?.summary;
 
       if (summary) {
         setSummarizedText(summary);

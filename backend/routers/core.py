@@ -9,7 +9,7 @@ core = APIRouter(
 )
 
 
-@core.post("/extractive_summary")
+@core.post("/summary/extractive")
 async def extractive_summary_gen(inputs: raw_text):
     if not inputs.text:
         raise HTTPException(status_code=422, detail={"message": "Missing input text."})
@@ -19,7 +19,7 @@ async def extractive_summary_gen(inputs: raw_text):
     return response
 
 
-@core.post("/abstractive_summary")
+@core.post("/summary/abstractive")
 async def abstractive_summary_gen(inputs: raw_text):
     if not inputs.text:
         raise HTTPException(status_code=422, detail={"message": "Missing input text."})
