@@ -15,7 +15,7 @@ async def extractive_summary_gen(inputs: raw_text):
         raise HTTPException(status_code=422, detail="Missing input text.")
 
     summary = extractive_summary(inputs.text)
-    response = {"data": {"summary": summary, "summary_ratio": inputs.summary_ratio}}
+    response = {"summary": summary}
     return response
 
 
@@ -25,5 +25,5 @@ async def abstractive_summary_gen(inputs: raw_text):
         raise HTTPException(status_code=422, detail="Missing input text.")
 
     summary = abstractive_summary(inputs.text)
-    response = {"summary": summary, "kind": "abstractive"}
+    response = {"summary": summary}
     return response
