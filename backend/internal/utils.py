@@ -1,5 +1,9 @@
+from configs import model_name
+from transformers import BartTokenizer, BartForConditionalGeneration
+
 import heapq
 import nltk
+import torch
 
 
 def extractive_summary(text, summary_ratio=0.3):
@@ -76,5 +80,34 @@ def extractive_summary(text, summary_ratio=0.3):
         num_sentences, sentence_scores, key=sentence_scores.get
     )
     summary = " ".join(summary_sentences)
+
+    return summary
+
+
+def abstractive_summary(text):
+    tokenizer = BartTokenizer.from_pretrained(model_name)
+    model = BartForConditionalGeneration.from_pretrained(model_name)
+
+    # use cuda if available
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    model.to(device)
+
+    # tokenize the input text
+    inputs = tokenizer(text, return_tensors="pt", max_length=1024, truncation=True).to(
+        device
+    )
+
+    # generate summary
+    summary_ids = model.generate(
+        inputs["input_ids"],
+        num_beams=3,
+        max_length=150,
+        min_length=30,
+        early_stopping=True,
+        length_penalty=1.0,
+        no_repeat_ngram_size=2,
+    )
+
+    summary = tokenizer.decode(summary_ids[0], skip_special_tokens=True)
 
     return summary
