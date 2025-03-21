@@ -1,5 +1,5 @@
 import express from "express";
-import { FAST_API_SERVER } from "../config";
+import { FASTAPI_SERVER } from "../configs/vars";
 
 const router = express.Router();
 
@@ -11,7 +11,7 @@ router.post("/extractive", async (req, res) => {
   }
 
   try {
-    const response = await fetch(`${FAST_API_SERVER}/api/summary/extractive`, {
+    const response = await fetch(`${FASTAPI_SERVER}/api/summary/extractive`, {
       method: "POST",
       body: JSON.stringify({
         text: req.body.text,
@@ -36,7 +36,7 @@ router.post("/abstractive", async (req, res) => {
   }
 
   try {
-    const response = await fetch(`${FAST_API_SERVER}/api/summary/abstractive`, {
+    const response = await fetch(`${FASTAPI_SERVER}/api/summary/abstractive`, {
       method: "POST",
       body: JSON.stringify({
         text: req.body.text,
