@@ -5,6 +5,8 @@ services:
       dockerfile: Dockerfile
     environment:
       FASTAPI_SERVER: ${FASTAPI_SERVER}
+      HASH_SALT: ${HASH_SALT}
+      JWT_SECRET: ${JWT_SECRET}
       MAIL_USER: ${MAIL_USER}
       MAIL_PASS: ${MAIL_PASS}
       MAIL_SENDER: ${MAIL_SENDER}
