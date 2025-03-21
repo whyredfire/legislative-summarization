@@ -18,11 +18,8 @@ const SiteHeader = () => {
               <Button variant={"ghost"}>
                 <Link href={"/"}>Home</Link>
               </Button>
-              <Button variant={"ghost"}>
-                <Link href={"/register"}>Register</Link>
-              </Button>
               <Button>
-                <Link href={"/login"}>Login</Link>
+                <Link href={"/signin"}>Sign in</Link>
               </Button>
             </div>
             <ModeSwitcher />

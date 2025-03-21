@@ -29,7 +29,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <SiteHeader />
-          <div className="container-wrapper container flex min-h-svh flex-col">
+          <div className="container-wrapper container flex grow">
             {children}
           </div>
           <Footer />
