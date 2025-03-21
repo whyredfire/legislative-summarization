@@ -144,6 +144,10 @@ router.post("/login", async (req, res) => {
     if (!user) {
       return res.status(404).json({
         message: "user not found",
+      }); // check if user is verified
+    } else if (!user.isVerified) {
+      return res.status(401).json({
+        message: "unauthorized access",
       });
     }
 
