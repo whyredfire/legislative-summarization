@@ -1,6 +1,7 @@
 import express from "express";
 import customRouter from "./routes";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 
 const app = express();
 const port = 3000;
@@ -10,6 +11,7 @@ app.use(
     origin: "*",
   })
 );
+app.use(cookieParser());
 app.use(express.json());
 app.use("/api", customRouter);
 

@@ -1,9 +1,10 @@
 import express from "express";
 import { FASTAPI_SERVER } from "../configs/vars";
+import { isAuthenticated } from "../middleware/authMiddleware";
 
 const router = express.Router();
 
-router.post("/extractive", async (req, res) => {
+router.post("/extractive", isAuthenticated, async (req, res) => {
   if (!req.body.text) {
     return res.status(400).json({
       message: "bad message format",
@@ -28,7 +29,7 @@ router.post("/extractive", async (req, res) => {
   }
 });
 
-router.post("/abstractive", async (req, res) => {
+router.post("/abstractive", isAuthenticated, async (req, res) => {
   if (!req.body.text) {
     return res.status(400).json({
       message: "bad message format",
