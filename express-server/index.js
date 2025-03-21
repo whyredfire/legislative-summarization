@@ -1,7 +1,17 @@
 import express from "express";
+import customRouter from "./routes";
+import cors from "cors";
 
 const app = express();
 const port = 3000;
+
+app.use(
+  cors({
+    origin: "*",
+  })
+);
+app.use(express.json());
+app.use("/api", customRouter);
 
 app.get("/", (req, res) => {
   res.send("Hello World!");
