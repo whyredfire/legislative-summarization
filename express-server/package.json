@@ -10,9 +10,11 @@
     "typescript": "^5"
   },
   "dependencies": {
+    "@prisma/client": "^6.5.0",
     "authenticator": "^1.1.5",
     "cors": "^2.8.5",
     "express": "^4.21.2",
-    "nodemailer": "^6.10.0"
+    "nodemailer": "^6.10.0",
+    "prisma": "^6.5.0"
   }
 }
