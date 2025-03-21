@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 
 import "./globals.css";
-import { ThemeProvider } from "@/components/theme-provider";
-import NavigationBar from "@/components/navbar";
+import { ThemeProvider } from "@/theme/theme-provider";
+import NavigationBar from "@/components/NavigationBar";
 
 export const metadata: Metadata = {
   title: "Create Next App",

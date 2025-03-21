@@ -1,7 +1,7 @@
 import { ModeToggle } from "./themeswitch";
 import Link from "next/link";
 import { H3 } from "@/ui/Typography";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 
 const NavigationBar = () => {
   return (
