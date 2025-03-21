@@ -1,11 +1,14 @@
 import express from "express";
 import { FASTAPI_SERVER } from "../configs/vars";
 import { isAuthenticated } from "../middleware/authMiddleware";
+import { saveSummary } from "../utils/saveHistory";
 
 const router = express.Router();
 
 router.post("/extractive", isAuthenticated, async (req, res) => {
-  if (!req.body.text) {
+  const text = req.body.text;
+
+  if (!text) {
     return res.status(400).json({
       message: "bad message format",
     });
@@ -20,6 +23,10 @@ router.post("/extractive", isAuthenticated, async (req, res) => {
     });
 
     const data = await response.json();
+
+    // save summary to db
+    saveSummary(req.userId, text, data.summary);
+
     res.status(200).json(data);
   } catch (error) {
     console.error(error);
@@ -30,7 +37,9 @@ router.post("/extractive", isAuthenticated, async (req, res) => {
 });
 
 router.post("/abstractive", isAuthenticated, async (req, res) => {
-  if (!req.body.text) {
+  const text = req.body.text;
+
+  if (!text) {
     return res.status(400).json({
       message: "bad message format",
     });
@@ -45,6 +54,10 @@ router.post("/abstractive", isAuthenticated, async (req, res) => {
     });
 
     const data = await response.json();
+
+    // save summary to db
+    saveSummary(req.userId, text, data.summary);
+
     res.status(200).json(data);
   } catch (error) {
     console.error(error);
