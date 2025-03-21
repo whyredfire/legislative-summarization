@@ -2,6 +2,9 @@ import express from "express";
 import { verifyOTP, sendOTP } from "../utils/otp";
 import prisma from "../configs/prisma";
 import { Prisma } from "@prisma/client";
+import { hashPassword, verifyPassword } from "../utils/passwordHasher";
+import jwt from "jsonwebtoken";
+import { JWT_SECRET } from "../configs/vars";
 
 const router = express.Router();
 
@@ -25,11 +28,13 @@ router.post("/register", async (req, res) => {
     // create unverified user
     if (!existingUser) {
       // check if email is unique
+      const hashedPassword = hashPassword(email, password);
+
       const unverifiedUser = await prisma.user.create({
         data: {
           email: email,
           username: username,
-          password: password,
+          password: hashedPassword,
           isVerified: false,
         },
       });
@@ -109,9 +114,58 @@ router.post("/register/verify", async (req, res) => {
       });
     }
   } catch (error) {
+    console.error("Error verifying registered user: ", error);
     res.status(500).json({
       message: "Internal server error",
       event: "REGISTER VERIFY",
+    });
+  }
+});
+
+router.post("/login", async (req, res) => {
+  const email = req.body.email;
+  const password = req.body.password;
+
+  // validate body
+  if (!email || !password) {
+    return res.status(400).json({
+      message: "bad request format",
+    });
+  }
+
+  try {
+    const user = await prisma.user.findFirst({
+      where: {
+        email: email,
+      },
+    });
+
+    // check if user exists
+    if (!user) {
+      return res.status(404).json({
+        message: "user not found",
+      });
+    }
+
+    // validate password
+    if (verifyPassword(email, password, user.password)) {
+      const jwtToken = jwt.sign({ userId: user.id }, JWT_SECRET, {
+        expiresIn: "168h", // 7 days
+      });
+      res
+        .cookie("token", jwtToken)
+        .status(200)
+        .json({ message: "user logged in" });
+    } else {
+      res.status(401).json({
+        message: "authentication failed",
+      });
+    }
+  } catch (error) {
+    console.error("Error logging in user: ", error);
+    res.status(500).json({
+      message: "Internal server error",
+      event: "LOGIN",
     });
   }
 });
