@@ -4,12 +4,12 @@ from internal.utils import extractive_summary, abstractive_summary
 from schemas import raw_text
 
 core = APIRouter(
-    prefix="/api",
+    prefix="/api/summary",
     tags=["core"],
 )
 
 
-@core.post("/summary/extractive")
+@core.post("/extractive")
 async def extractive_summary_gen(inputs: raw_text):
     if not inputs.text:
         raise HTTPException(status_code=422, detail={"message": "Missing input text."})
@@ -19,7 +19,7 @@ async def extractive_summary_gen(inputs: raw_text):
     return response
 
 
-@core.post("/summary/abstractive")
+@core.post("/abstractive")
 async def abstractive_summary_gen(inputs: raw_text):
     if not inputs.text:
         raise HTTPException(status_code=422, detail={"message": "Missing input text."})
