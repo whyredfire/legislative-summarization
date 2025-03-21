@@ -1,17 +1,43 @@
 import express from "express";
 import { verifyOTP, sendOTP } from "../utils/otp";
+import prisma from "../configs/prisma";
 
 const router = express.Router();
 
 router.post("/register", async (req, res) => {
-  if (!req.body.email) {
+  const email = req.body.email;
+
+  if (!email) {
     return res.status(400).json({
       message: "bad request format",
     });
   }
 
   try {
-    sendOTP(req.body.email, "REGISTER");
+    // check if user exists
+    const existing_user = await prisma.user.findFirst({
+      where: {
+        email: email,
+      },
+    });
+
+    // create unverified user
+    if (!existing_user) {
+      const unverified_user = await prisma.user.create({
+        data: {
+          email: email,
+          isVerified: false,
+        },
+      });
+    } // check if existing_user is verified
+    else if (existing_user.isVerified) {
+      return res.status(409).json({
+        message: "User already exists",
+      });
+    }
+
+    // sent OTP
+    sendOTP(email, "REGISTER");
     res.status(200).json({
       message: "OTP sent sucessfully",
     });
@@ -25,14 +51,44 @@ router.post("/register", async (req, res) => {
 });
 
 router.post("/register/verify", async (req, res) => {
-  if (!req.body.otp || !req.body.email) {
+  const email = req.body.email;
+  const otp = req.body.otp;
+
+  if (!otp || !email) {
     return res.status(400).json({
       message: "bad request format",
     });
   }
 
   try {
-    if (verifyOTP(req.body.email, "REGISTER", req.body.otp)) {
+    const user = await prisma.user.findFirst({
+      where: {
+        email: email,
+      },
+    });
+
+    // check if user exists
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found",
+      });
+    }
+
+    // check if user is authorized
+    if (user.isVerified) {
+      return res.status(409).json({
+        message: "User already authorized",
+      });
+    }
+
+    // verify OTP
+    if (verifyOTP(email, "REGISTER", otp)) {
+      // set isVerified to true
+      const verifyUser = await prisma.user.update({
+        where: { id: user.id },
+        data: { isVerified: true },
+      });
+
       res.status(201).json({
         message: "User registered successfully",
       });
