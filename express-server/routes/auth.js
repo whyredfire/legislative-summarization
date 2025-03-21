@@ -1,47 +1,59 @@
 import express from "express";
 import { verifyOTP, sendOTP } from "../utils/otp";
 import prisma from "../configs/prisma";
+import { Prisma } from "@prisma/client";
 
 const router = express.Router();
 
 router.post("/register", async (req, res) => {
   const email = req.body.email;
+  const username = req.body.username;
+  const password = req.body.password;
 
-  if (!email) {
+  if (!email || !username || !password) {
     return res.status(400).json({
       message: "bad request format",
     });
   }
 
   try {
-    // check if user exists
-    const existing_user = await prisma.user.findFirst({
-      where: {
-        email: email,
-      },
+    // check if user exists with email
+    const existingUser = await prisma.user.findFirst({
+      where: { email: email },
     });
 
     // create unverified user
-    if (!existing_user) {
-      const unverified_user = await prisma.user.create({
+    if (!existingUser) {
+      // check if email is unique
+      const unverifiedUser = await prisma.user.create({
         data: {
           email: email,
+          username: username,
+          password: password,
           isVerified: false,
         },
       });
-    } // check if existing_user is verified
-    else if (existing_user.isVerified) {
+    } // check if existing user is verified
+    else if (existingUser.isVerified) {
       return res.status(409).json({
         message: "User already exists",
       });
     }
 
-    // sent OTP
+    // send OTP
     sendOTP(email, "REGISTER");
     res.status(200).json({
       message: "OTP sent sucessfully",
     });
   } catch (error) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      if (error.code === "P2002" && error.meta?.target) {
+        const duplicateField = error.meta.target.join(", ");
+        return res.status(400).json({
+          message: `Duplicate value for: ${duplicateField}`,
+        });
+      }
+    }
     console.error("Error registering user: ", error);
     res.send(500).json({
       message: "Internal server error",
@@ -54,7 +66,8 @@ router.post("/register/verify", async (req, res) => {
   const email = req.body.email;
   const otp = req.body.otp;
 
-  if (!otp || !email) {
+  // validate body data
+  if (!email || !otp) {
     return res.status(400).json({
       message: "bad request format",
     });
@@ -62,9 +75,7 @@ router.post("/register/verify", async (req, res) => {
 
   try {
     const user = await prisma.user.findFirst({
-      where: {
-        email: email,
-      },
+      where: { email: email },
     });
 
     // check if user exists
@@ -84,7 +95,7 @@ router.post("/register/verify", async (req, res) => {
     // verify OTP
     if (verifyOTP(email, "REGISTER", otp)) {
       // set isVerified to true
-      const verifyUser = await prisma.user.update({
+      const verifiedUser = await prisma.user.update({
         where: { id: user.id },
         data: { isVerified: true },
       });
@@ -98,7 +109,6 @@ router.post("/register/verify", async (req, res) => {
       });
     }
   } catch (error) {
-    console.error("Error verifying user: ", error);
     res.status(500).json({
       message: "Internal server error",
       event: "REGISTER VERIFY",

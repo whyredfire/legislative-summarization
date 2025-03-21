@@ -1,9 +1,8 @@
 -- CreateTable
 CREATE TABLE "User" (
     "id" TEXT NOT NULL,
-    "username" TEXT,
     "password" TEXT,
-    "name" TEXT,
+    "username" TEXT,
     "email" TEXT NOT NULL,
     "isVerified" BOOLEAN NOT NULL,
 
