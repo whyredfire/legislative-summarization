@@ -1,0 +1,21 @@
+import { H1, LargeText, P } from "@/ui/Typography";
+import Link from "next/link";
+
+const NotFoundPage = () => {
+  return (
+    <>
+      <main className="flex flex-col items-center justify-center h-screen">
+        <H1>404</H1>
+        <LargeText>Page not found</LargeText>
+        <P>
+          Redirect to home page from{" "}
+          <Link className="text-blue-500 hover:text-blue-600" href={"/"}>
+            here
+          </Link>
+        </P>
+      </main>
+    </>
+  );
+};
+
+export default NotFoundPage;
