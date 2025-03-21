@@ -3,7 +3,9 @@ import { Inter } from "next/font/google";
 
 import "./globals.css";
 import { ThemeProvider } from "@/theme/theme-provider";
-import NavigationBar from "@/components/NavigationBar";
+
+import SiteHeader from "@/components/SiteHeader";
+import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -26,8 +28,11 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <NavigationBar />
-          {children}
+          <SiteHeader />
+          <div className="container-wrapper container flex min-h-svh flex-col">
+            {children}
+          </div>
+          <Footer />
         </ThemeProvider>
       </body>
     </html>
