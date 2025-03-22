@@ -6,7 +6,6 @@ interface PageProps {
 
 const VerifyOTP = async ({ params }: PageProps) => {
   const uniqueId = await params;
-  console.log(uniqueId);
   return (
     <>
       <VerifyCard uniqueId={uniqueId.uniqueIdentifier} />

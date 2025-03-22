@@ -49,7 +49,7 @@ const VerifyCard = ({ uniqueId }: { uniqueId: string }) => {
 
     try {
       const response = await api.post("/auth/register/verify", values);
-      if (response.status === 200) {
+      if (response.status === 201) {
         toast.success("OTP verified");
         navigator.push("/signin");
       }
