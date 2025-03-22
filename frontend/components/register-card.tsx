@@ -54,7 +54,7 @@ const RegisterCard = () => {
       if (response.status === 200) {
         toast.info(response.data.message);
       }
-      navigator.push(`/auth/register/verify/${response.data.uniqueId}`);
+      navigator.push(`/signin/${response.data.uniqueId}`);
     } catch (error) {
       console.error(error);
       toast.error("An error occurred while registering.");
