@@ -11,6 +11,12 @@ export default async function middleware(req: NextRequest) {
 
   const token = (await cookies()).get("token")?.value;
 
+  let isUserLoggedIn = false;
+
+  if (token) {
+    isUserLoggedIn = true;
+  }
+
   if (isProtectedRoute && !token) {
     return NextResponse.redirect(new URL("/signin", req.nextUrl));
   }
@@ -27,7 +33,10 @@ export default async function middleware(req: NextRequest) {
     }
   }
 
-  return NextResponse.next();
+  const response = NextResponse.next();
+  response.headers.set("X-User-Authenticated", String(isUserLoggedIn));
+
+  return response;
 }
 
 export const config = {
