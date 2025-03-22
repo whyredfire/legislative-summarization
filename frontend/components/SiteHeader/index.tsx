@@ -5,12 +5,8 @@ import { Button } from "@/components/ui/button";
 
 import { ModeSwitcher } from "./mode-switcher";
 import { siteConfig } from "@/data/globals";
-import { cn } from "@/lib/utils";
-import { isUserLoggedIn } from "@/hooks/check-user-status";
 
-const SiteHeader = async () => {
-  const userLoggedIn = await isUserLoggedIn();
-
+const SiteHeader = () => {
   return (
     <>
       <header className=" border-grid border-b-sidebar-border border">
@@ -23,10 +19,7 @@ const SiteHeader = async () => {
               <Link href={"/"}>
                 <Button variant={"ghost"}>Home</Button>
               </Link>
-              <Link
-                className={cn(userLoggedIn ? "hidden" : "block")}
-                href={"/signin"}
-              >
+              <Link href={"/signin"}>
                 <Button>Sign in</Button>
               </Link>
             </div>
