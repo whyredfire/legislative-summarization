@@ -34,14 +34,14 @@ const SummarizeForm = () => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      const response = await api.post("/summary/extractive", {
+      const response = await api.post("/summary/abstractive", {
         text: values.summarizeText,
       });
+      console.log(response);
 
-      form.setValue(
-        "summarizedText",
-        response.data.text || "Summarization failed."
-      );
+      if (response.status === 200) {
+        form.setValue("summarizedText", response.data.summary);
+      }
     } catch (error) {
       console.error(error);
       toast.error("An error occurred while summarizing.");

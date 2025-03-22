@@ -19,23 +19,26 @@ import { H3, MutedText } from "@/components/ui/typography";
 import Link from "next/link";
 import { api } from "@/api/api";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 const LoginCard = () => {
+  const navigator = useRouter();
+
   const formSchema = z.object({
-    username: z.string(),
+    email: z.string(),
     password: z.string(),
   });
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      username: "",
+      email: "",
       password: "",
     },
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    if (!values.username || !values.password) {
+    if (!values.email || !values.password) {
       toast.error("Enter required fields.");
       return;
     }
@@ -43,8 +46,13 @@ const LoginCard = () => {
     try {
       const response = await api.post("/auth/login", values);
       console.log(response);
+      if (response.status === 200) {
+        toast.success("Logged in successfully");
+        navigator.push("/summarize");
+        navigator.refresh();
+      }
       if (response.status == 400) {
-        toast.error("Invalid username or password");
+        toast.error("Invalid email or password");
       }
     } catch (error) {
       console.error(error);
@@ -65,11 +73,11 @@ const LoginCard = () => {
           >
             <FormField
               control={form.control}
-              name="username"
+              name="email"
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input placeholder="Username" {...field} />
+                    <Input placeholder="email" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

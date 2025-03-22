@@ -18,6 +18,7 @@ import { Card, CardTitle } from "@/components/ui/card";
 import { H3 } from "@/components/ui/typography";
 import { api } from "@/api/api";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 const RegisterCard = () => {
   const formSchema = z.object({
@@ -39,6 +40,8 @@ const RegisterCard = () => {
     },
   });
 
+  const navigator = useRouter();
+
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     if (!values.email || !values.username || !values.password) {
       toast.error("Enter required fields.");
@@ -50,6 +53,7 @@ const RegisterCard = () => {
       if (response.status === 200) {
         toast.info(response.data.message);
       }
+      navigator.push(`/auth/register/verify/${response.data.uniqueId}`);
     } catch (error) {
       console.error(error);
       toast.error("An error occurred while registering.");

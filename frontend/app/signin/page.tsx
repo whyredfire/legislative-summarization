@@ -2,7 +2,7 @@ import LoginCard from "@/components/login-card";
 import RegisterCard from "@/components/register-card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
-const LoginPage = () => {
+const LoginPage = async () => {
   return (
     <>
       <Tabs defaultValue="login">
