@@ -5,6 +5,7 @@ import { Prisma } from "@prisma/client";
 import { hashPassword, verifyPassword } from "../utils/passwordHasher";
 import jwt, { verify } from "jsonwebtoken";
 import { JWT_SECRET } from "../configs/vars";
+import { isAuthenticated } from "../middleware/authMiddleware";
 
 const router = express.Router();
 
@@ -257,6 +258,12 @@ router.post("/resetpassword/verify", async (req, res) => {
       message: "Something went wrong",
     });
   }
+});
+
+router.get("/verify", isAuthenticated, async (req, res) => {
+  res.status(200).json({
+    message: "Verified",
+  });
 });
 
 export default router;
