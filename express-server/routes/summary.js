@@ -2,6 +2,7 @@ import express from "express";
 import { FASTAPI_SERVER } from "../configs/vars";
 import { isAuthenticated } from "../middleware/authMiddleware";
 import { saveSummary } from "../utils/saveHistory";
+import prisma from "../configs/prisma";
 
 const router = express.Router();
 
@@ -25,7 +26,7 @@ router.post("/extractive", isAuthenticated, async (req, res) => {
     const data = await response.json();
 
     // save summary to db
-    saveSummary(req.userId, text, data.summary);
+    saveSummary(req.userId, "extractive", text, data.summary);
 
     res.status(200).json(data);
   } catch (error) {
@@ -56,13 +57,46 @@ router.post("/abstractive", isAuthenticated, async (req, res) => {
     const data = await response.json();
 
     // save summary to db
-    saveSummary(req.userId, text, data.summary);
+    saveSummary(req.userId, "abstractive", text, data.summary);
 
     res.status(200).json(data);
   } catch (error) {
     console.error(error);
     return res.status(500).json({
       message: "Internal server error",
+    });
+  }
+});
+
+router.get("/history", isAuthenticated, async (req, res) => {
+  const count = req.params.count;
+
+  try {
+    const results = await prisma.summarizationHistory.findMany({
+      where: {
+        userId: req.userId,
+      },
+      take: count,
+      orderBy: {
+        createdAt: "desc",
+      },
+      select: {
+        id: true,
+        title: true,
+        kind: true,
+        inputText: true,
+        summary: true,
+        createdAt: true,
+      },
+    });
+
+    res.status(200).json({
+      data: results,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      message: "Something went wrong",
     });
   }
 });
