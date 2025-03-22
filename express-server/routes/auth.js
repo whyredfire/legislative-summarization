@@ -160,11 +160,16 @@ router.post("/login", async (req, res) => {
 
     // validate password
     if (verifyPassword(user.email, password, user.password)) {
+      // set cookies
       const jwtToken = jwt.sign({ userId: user.id }, JWT_SECRET, {
-        expiresIn: "168h", // 7 days
+        expiresIn: 60 * 60 * 24 * 7, // 7 days in seconds
       });
+
+      const userInfo = btoa(`${user.username}, ${user.email}`);
+
       res
-        .cookie("token", jwtToken)
+        .cookie("token", jwtToken, { maxAge: 7 * 24 * 60 * 60 * 1000 }) // 7 days
+        .cookie("data", userInfo, { maxAge: 7 * 24 * 60 * 60 * 1000 }) // 7 days
         .status(200)
         .json({ message: "user logged in" });
     } else {
