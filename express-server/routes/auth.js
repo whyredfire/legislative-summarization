@@ -3,9 +3,8 @@ import { verifyOTP, sendOTP } from "../utils/otp";
 import prisma from "../configs/prisma";
 import { Prisma } from "@prisma/client";
 import { hashPassword, verifyPassword } from "../utils/passwordHasher";
-import jwt, { verify } from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 import { JWT_SECRET } from "../configs/vars";
-import { isAuthenticated } from "../middleware/authMiddleware";
 
 const router = express.Router();
 
@@ -182,85 +181,6 @@ router.post("/login", async (req, res) => {
     res.status(500).json({
       message: "Internal server error",
       event: "LOGIN",
-    });
-  }
-});
-
-router.post("/resetpassword", async (req, res) => {
-  const email = req.body.email;
-
-  if (!email) {
-    return res.status(400).json({
-      message: "bad request format",
-    });
-  }
-  try {
-    const user = await prisma.user.findFirst({
-      where: {
-        email: email,
-      },
-    });
-
-    // check if user exists
-    if (!user) {
-      return res.status(404).json({
-        message: "user not found",
-      });
-    }
-
-    sendOTP(email, "FORGOT");
-    res.status(200).json({
-      message: "OTP sent sucessfully",
-    });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({
-      message: "Something went wrong",
-    });
-  }
-});
-
-router.post("/resetpassword/verify", async (req, res) => {
-  const email = req.body.email;
-  const otp = req.body.otp;
-  const newPassword = req.body.password;
-
-  if (!email || !otp || !newPassword) {
-    return res.status(400).json({
-      message: "bad request format",
-    });
-  }
-
-  try {
-    // find user
-    const user = prisma.user.findFirst({
-      where: {
-        email: email,
-      },
-    });
-
-    // verify OTP
-    if (verifyOTP(email, "FORGOT", otp)) {
-      const hashedPassword = hashPassword(email, newPassword);
-
-      // update password
-      const updatedUser = await prisma.user.update({
-        where: { email: email },
-        data: { password: hashedPassword },
-      });
-
-      return res.status(200).json({
-        message: "password updated",
-      });
-    } else {
-      return res.status(401).json({
-        message: "Unauthorized",
-      });
-    }
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({
-      message: "Something went wrong",
     });
   }
 });
