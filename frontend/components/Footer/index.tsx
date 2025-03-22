@@ -1,4 +1,4 @@
-import { MutedText, P, SmallText } from "../ui/typography";
+import { MutedText, SmallText } from "../ui/typography";
 
 const Footer = () => {
   return (
