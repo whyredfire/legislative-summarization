@@ -84,7 +84,7 @@ const RegisterCard = () => {
                 </FormItem>
               )}
             />
-            <Button className="w-fit mt-4" type="submit">
+            <Button className="mx-auto mt-4" type="submit">
               Register
             </Button>
           </form>

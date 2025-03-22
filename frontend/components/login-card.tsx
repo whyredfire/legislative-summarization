@@ -11,7 +11,6 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -35,6 +34,7 @@ const LoginCard = () => {
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
   }
+
   return (
     <>
       <Card className="px-8 py-4">
@@ -70,7 +70,7 @@ const LoginCard = () => {
                 </FormItem>
               )}
             />
-            <Button className="mt-4 w-fit" type="submit">
+            <Button className="mt-4 mx-auto" type="submit">
               Login
             </Button>
           </form>
