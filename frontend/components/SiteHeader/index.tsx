@@ -9,6 +9,7 @@ import { headers } from "next/headers";
 
 const SiteHeader = async () => {
   const userIsAuthenticated = (await headers()).get("X-User-Authenticated");
+  const boolUserIsAuthenticated = userIsAuthenticated === "true";
 
   return (
     <>
@@ -22,7 +23,7 @@ const SiteHeader = async () => {
               <Link href={"/"}>
                 <Button variant={"ghost"}>Home</Button>
               </Link>
-              {!userIsAuthenticated && (
+              {!boolUserIsAuthenticated && (
                 <Link href={"/signin"}>
                   <Button>Sign in</Button>
                 </Link>
