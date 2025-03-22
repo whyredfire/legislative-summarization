@@ -69,11 +69,10 @@ const SummarizePage = () => {
                 <FormControl>
                   <Textarea
                     readOnly
-                    className="min-h-[30vh] resize-none"
+                    className="min-h-[30vh] max-h-[30vh] resize-none"
                     {...field}
                   />
                 </FormControl>
-                <FormMessage />
               </FormItem>
             )}
           />
