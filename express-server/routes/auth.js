@@ -123,20 +123,26 @@ router.post("/register/verify", async (req, res) => {
 });
 
 router.post("/login", async (req, res) => {
-  const email = req.body.email;
+  const login = req.body.login;
   const password = req.body.password;
 
   // validate body
-  if (!email || !password) {
+  if (!login || !password) {
     return res.status(400).json({
       message: "bad request format",
     });
   }
 
   try {
+    // check if login is username or email
+    const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(login);
+
     const user = await prisma.user.findFirst({
       where: {
-        email: email,
+        OR: [
+          { email: isEmail ? login : undefined },
+          { username: !isEmail ? login : undefined },
+        ],
       },
     });
 
@@ -152,7 +158,7 @@ router.post("/login", async (req, res) => {
     }
 
     // validate password
-    if (verifyPassword(email, password, user.password)) {
+    if (verifyPassword(user.email, password, user.password)) {
       const jwtToken = jwt.sign({ userId: user.id }, JWT_SECRET, {
         expiresIn: "168h", // 7 days
       });
