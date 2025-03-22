@@ -3,24 +3,26 @@ import Link from "next/link";
 import { H4 } from "@/components/ui/typography";
 import { Button } from "@/components/ui/button";
 
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-
 import { ModeSwitcher } from "./mode-switcher";
 import { siteConfig } from "@/data/globals";
-import { headers } from "next/headers";
-import { HomeIcon, LogIn, MoreHorizontalIcon } from "lucide-react";
+import { cookies } from "next/headers";
+import UserAvatarDropdown from "../user-dropdown";
 
 const SiteHeader = async () => {
-  const userIsAuthenticated = (await headers()).get("X-User-Authenticated");
-  const boolUserIsAuthenticated = userIsAuthenticated === "true";
-  console.log("boolUserIsAuthenticated", boolUserIsAuthenticated);
+  const userDataCookie = (await cookies()).get("data");
+  const boolUserIsAuthenticated = (await cookies()).get("token");
+
+  let username = "";
+  let email = "";
+
+  if (userDataCookie?.value) {
+    try {
+      const decoded = atob(userDataCookie.value);
+      [username, email] = decoded.split(", ");
+    } catch (error) {
+      console.error("Error decoding user data:", error);
+    }
+  }
 
   return (
     <>
@@ -29,49 +31,14 @@ const SiteHeader = async () => {
           <Link href={"/"}>
             <H4>{siteConfig.title}</H4>
           </Link>
-          <div className="flex justify-between items-center gap-8">
-            <div className="sm:hidden">
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="icon">
-                    <MoreHorizontalIcon />
-                    <span className="sr-only">Toggle menu</span>
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent
-                  align="start"
-                  sideOffset={20}
-                  alignOffset={-50}
-                  hideWhenDetached
-                >
-                  <DropdownMenuItem>
-                    <Link className="inline-flex items-center gap-2" href={"/"}>
-                      <HomeIcon />
-                      Home
-                    </Link>
-                  </DropdownMenuItem>
-                  {!boolUserIsAuthenticated && (
-                    <DropdownMenuItem>
-                      <Link
-                        className="inline-flex items-center gap-2"
-                        href={"/signin"}
-                      >
-                        <LogIn />
-                        Login
-                      </Link>
-                    </DropdownMenuItem>
-                  )}
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
-            <div className="hidden sm:flex items-center">
-              <Link href={"/"}>
-                <Button variant={"ghost"}>Home</Button>
-              </Link>
-              {!boolUserIsAuthenticated && (
+          <div className="flex justify-between items-center gap-4">
+            <div className="flex items-center">
+              {!boolUserIsAuthenticated ? (
                 <Link href={"/signin"}>
                   <Button>Sign in</Button>
                 </Link>
+              ) : (
+                <UserAvatarDropdown username={username} email={email} />
               )}
             </div>
             <ModeSwitcher />

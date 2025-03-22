@@ -265,10 +265,4 @@ router.post("/resetpassword/verify", async (req, res) => {
   }
 });
 
-router.get("/verify", isAuthenticated, async (req, res) => {
-  res.status(200).json({
-    message: "Verified",
-  });
-});
-
 export default router;

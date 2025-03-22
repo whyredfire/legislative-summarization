@@ -8,7 +8,7 @@ const TABS = [
 
 const SummarizePage = () => {
   return (
-    <main className="grid grid-cols-1 w-full">
+    <main className="grid grid-cols-1 w-full my-4">
       <Tabs defaultValue="abstractive">
         <TabsList className="mx-auto mb-4">
           {TABS.map(({ value, label }) => (
