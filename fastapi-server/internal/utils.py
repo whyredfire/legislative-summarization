@@ -108,6 +108,6 @@ def abstractive_summary(text):
         no_repeat_ngram_size=2,
     )
 
-    summary = tokenizer.decode(summary_ids[0], skip_special_tokens=True)
+    summary = tokenizer.decode(summary_ids[0], skip_special_tokens=True).strip()
 
     return summary
