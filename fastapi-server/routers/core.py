@@ -20,7 +20,7 @@ async def extractive_summary_gen(inputs: raw_text):
 
 
 @core.post("/abstractive")
-async def abstractive_summary_gen(inputs: raw_text):
+def abstractive_summary_gen(inputs: raw_text):
     if not inputs.text:
         raise HTTPException(status_code=422, detail={"message": "Missing input text."})
 
