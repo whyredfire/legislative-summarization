@@ -15,7 +15,8 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Card, CardTitle } from "@/components/ui/card";
-import { H3 } from "@/components/ui/typography";
+import { H3, MutedText } from "@/components/ui/typography";
+import Link from "next/link";
 
 const LoginCard = () => {
   const formSchema = z.object({
@@ -70,10 +71,16 @@ const LoginCard = () => {
                 </FormItem>
               )}
             />
-
-            <Button className="mt-4 mx-auto" type="submit">
-              Login
-            </Button>
+            <div className="flex flex-col gap-2">
+              <Button variant={"link"}>
+                <MutedText>
+                  <Link href={"#!"}>Forgot your password?</Link>
+                </MutedText>
+              </Button>
+              <Button className="mt-2 mx-auto" type="submit">
+                Login
+              </Button>
+            </div>
           </form>
         </Form>
       </Card>
