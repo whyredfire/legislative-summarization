@@ -20,6 +20,7 @@ import { HomeIcon, LogIn, MoreHorizontalIcon } from "lucide-react";
 const SiteHeader = async () => {
   const userIsAuthenticated = (await headers()).get("X-User-Authenticated");
   const boolUserIsAuthenticated = userIsAuthenticated === "true";
+  console.log("boolUserIsAuthenticated", boolUserIsAuthenticated);
 
   return (
     <>
