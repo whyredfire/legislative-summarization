@@ -34,6 +34,7 @@ const SummarizeForm = ({ status }: SummarizeFormProps) => {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    form.setValue("summarizedText", "Summarizing...");
     try {
       const response = await api.post(`/summary/${status}`, {
         text: values.summarizeText,
