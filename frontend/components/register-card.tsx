@@ -11,6 +11,7 @@ import {
   FormControl,
   FormField,
   FormItem,
+  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -62,7 +63,7 @@ const RegisterCard = () => {
 
   return (
     <>
-      <Card className="px-8 py-4">
+      <Card className="px-8 py-4 w-full max-w-[400px]">
         <CardTitle className="text-center">
           <H3>Register</H3>
         </CardTitle>
@@ -76,8 +77,9 @@ const RegisterCard = () => {
               name="username"
               render={({ field }) => (
                 <FormItem>
+                  <FormLabel>Username</FormLabel>
                   <FormControl>
-                    <Input placeholder="Username" {...field} />
+                    <Input {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -88,8 +90,9 @@ const RegisterCard = () => {
               name="email"
               render={({ field }) => (
                 <FormItem>
+                  <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input type="email" placeholder="Email" {...field} />
+                    <Input type="email" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -100,8 +103,9 @@ const RegisterCard = () => {
               name="password"
               render={({ field }) => (
                 <FormItem>
+                  <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <Input type="password" placeholder="Password" {...field} />
+                    <Input type="password" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

@@ -11,6 +11,7 @@ import {
   FormControl,
   FormField,
   FormItem,
+  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -25,20 +26,20 @@ const LoginCard = () => {
   const navigator = useRouter();
 
   const formSchema = z.object({
-    email: z.string(),
+    login: z.string(),
     password: z.string(),
   });
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: "",
+      login: "",
       password: "",
     },
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    if (!values.email || !values.password) {
+    if (!values.login || !values.password) {
       toast.error("Enter required fields.");
       return;
     }
@@ -52,7 +53,7 @@ const LoginCard = () => {
         navigator.refresh();
       }
       if (response.status == 400) {
-        toast.error("Invalid email or password");
+        toast.error("Invalid login or password");
       }
     } catch (error) {
       console.error(error);
@@ -62,22 +63,20 @@ const LoginCard = () => {
 
   return (
     <>
-      <Card className="px-8 py-4">
+      <Card className="px-8 py-4 w-full max-w-[400px]">
         <CardTitle className="text-center">
           <H3>Login</H3>
         </CardTitle>
         <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-4 justify-items-center"
-          >
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 ">
             <FormField
               control={form.control}
-              name="email"
+              name="login"
               render={({ field }) => (
                 <FormItem>
+                  <FormLabel>Username or email address</FormLabel>
                   <FormControl>
-                    <Input placeholder="email" {...field} />
+                    <Input {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -88,19 +87,22 @@ const LoginCard = () => {
               name="password"
               render={({ field }) => (
                 <FormItem>
+                  <div className="flex flex-row justify-between">
+                    <FormLabel>Password</FormLabel>
+                    <Button variant={"link"}>
+                      <MutedText>
+                        <Link href={"#!"}>Forgot your password?</Link>
+                      </MutedText>
+                    </Button>
+                  </div>
                   <FormControl>
-                    <Input type="password" placeholder="Password" {...field} />
+                    <Input type="password" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
             <div className="flex flex-col gap-2">
-              <Button variant={"link"}>
-                <MutedText>
-                  <Link href={"#!"}>Forgot your password?</Link>
-                </MutedText>
-              </Button>
               <Button className="mt-2 mx-auto" type="submit">
                 Login
               </Button>
