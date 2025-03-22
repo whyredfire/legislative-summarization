@@ -14,14 +14,14 @@ const Home = () => {
         <LeadingText className="text-pretty">
           {siteConfig.description}
         </LeadingText>
-        <Button
-          size={"lg"}
-          className="rounded-full mt-2 mx-auto cursor-pointer"
-        >
-          <Link className="font-bold" href={"/summarize"}>
+        <Link href={"/summarize"}>
+          <Button
+            size={"lg"}
+            className="rounded-full font-bold mt-2 mx-auto cursor-pointer"
+          >
             Get Started
-          </Link>
-        </Button>
+          </Button>
+        </Link>
       </main>
     </>
   );
