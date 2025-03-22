@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { H1, LeadingText } from "@/ui/Typography";
+import { H1, LeadingText } from "@/components/ui/typography";
 import Link from "next/link";
 
 const Home = () => {

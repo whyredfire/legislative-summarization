@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { H3 } from "@/ui/Typography";
+import { H3 } from "@/components/ui/typography";
 import { Button } from "@/components/ui/button";
 
 import { ModeSwitcher } from "./mode-switcher";

@@ -1,4 +1,4 @@
-import { H1, LargeText, P } from "@/ui/Typography";
+import { H1, LargeText, P } from "@/components/ui/typography";
 import Link from "next/link";
 
 const NotFoundPage = () => {

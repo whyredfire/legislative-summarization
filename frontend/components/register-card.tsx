@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Card, CardTitle } from "@/components/ui/card";
-import { H3 } from "@/ui/Typography";
+import { H3 } from "@/components/ui/typography";
 
 const RegisterCard = () => {
   const formSchema = z.object({

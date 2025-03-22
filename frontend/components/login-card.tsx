@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Card, CardTitle } from "@/components/ui/card";
-import { H3 } from "@/ui/Typography";
+import { H3 } from "@/components/ui/typography";
 
 const LoginCard = () => {
   const formSchema = z.object({
@@ -70,6 +70,7 @@ const LoginCard = () => {
                 </FormItem>
               )}
             />
+
             <Button className="mt-4 mx-auto" type="submit">
               Login
             </Button>
