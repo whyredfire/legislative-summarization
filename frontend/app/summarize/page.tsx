@@ -17,6 +17,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { api, post } from "@/api/api";
 
 const SummarizePage = () => {
   const formSchema = z.object({
@@ -34,6 +35,21 @@ const SummarizePage = () => {
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
+    api
+      .post("/summary/extractive", {
+        text: values.summarizeText,
+      })
+      .then(
+        (response) => {
+          form.setValue("summarizedText", response.data.text);
+        },
+        (error) => {
+          console.error(error);
+        }
+      )
+      .catch((error) => {
+        console.error(error);
+      });
   }
 
   return (

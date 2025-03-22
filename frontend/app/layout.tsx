@@ -6,6 +6,7 @@ import { ThemeProvider } from "@/theme/theme-provider";
 
 import SiteHeader from "@/components/SiteHeader";
 import Footer from "@/components/Footer";
+import { Toaster } from "@/components/ui/sonner";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -34,6 +35,7 @@ export default function RootLayout({
               {children}
             </div>
             <Footer />
+            <Toaster richColors position="top-center" />
           </ThemeProvider>
         </div>
       </body>

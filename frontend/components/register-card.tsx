@@ -16,12 +16,18 @@ import {
 import { Input } from "@/components/ui/input";
 import { Card, CardTitle } from "@/components/ui/card";
 import { H3 } from "@/components/ui/typography";
+import { api } from "@/api/api";
+import { toast } from "sonner";
 
 const RegisterCard = () => {
   const formSchema = z.object({
     email: z.string().regex(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/),
     username: z.string().regex(/^[a-zA-Z0-9._-]{3,}$/),
-    password: z.string().regex(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/),
+    password: z
+      .string()
+      .regex(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>]).{8,}$/
+      ),
   });
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -35,7 +41,19 @@ const RegisterCard = () => {
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
+    api
+      .post("/auth/register", values)
+      .then((res) => {
+        console.log(res);
+        if (res.status === 200) {
+          toast.info(res.data.message);
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   }
+
   return (
     <>
       <Card className="px-8 py-4">
