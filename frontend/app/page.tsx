@@ -9,16 +9,18 @@ const Home = () => {
     <>
       <main className="text-center flex container m-auto flex-col gap-2">
         <GradientText>
-          <H1 className="leading-16">{siteConfig.title}</H1>
+          <H1 className="leading-14">{siteConfig.title}</H1>
         </GradientText>
-        <LeadingText className=" text-pretty">
+        <LeadingText className="text-pretty">
           {siteConfig.description}
         </LeadingText>
         <Button
           size={"lg"}
           className="rounded-full mt-2 mx-auto cursor-pointer"
         >
-          <Link href={"/summarize"}>Click here to start</Link>
+          <Link className="font-bold" href={"/summarize"}>
+            Get Started
+          </Link>
         </Button>
       </main>
     </>
