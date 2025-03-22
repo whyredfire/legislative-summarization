@@ -41,15 +41,23 @@ const VerifyCard = ({ uniqueId }: { uniqueId: string }) => {
 
   const navigator = useRouter();
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
-    api.post("/auth/register/verify", values).then((res) => {
-      if (res.status === 200) {
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    if (!values.otp) {
+      toast.error("OTP field is empty.");
+      return;
+    }
+
+    try {
+      const response = await api.post("/auth/register/verify", values);
+      if (response.status === 200) {
         toast.success("OTP verified");
         navigator.push("/signin");
       }
-    });
-  }
+    } catch (error) {
+      console.error(error);
+      toast.error("Invalid OTP");
+    }
+  };
 
   return (
     <>

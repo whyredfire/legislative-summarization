@@ -34,20 +34,23 @@ const LoginCard = () => {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
-    api
-      .post("/auth/login", values)
-      .then((res) => {
-        console.log(res);
-        if (res.status == 400) {
-          toast.error("Invalid username or password");
-        }
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  }
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    if (!values.username || !values.password) {
+      toast.error("Enter required fields.");
+      return;
+    }
+
+    try {
+      const response = await api.post("/auth/login", values);
+      console.log(response);
+      if (response.status == 400) {
+        toast.error("Invalid username or password");
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("An error occurred while logging in.");
+    }
+  };
 
   return (
     <>

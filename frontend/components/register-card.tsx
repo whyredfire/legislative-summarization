@@ -39,20 +39,22 @@ const RegisterCard = () => {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
-    api
-      .post("/auth/register", values)
-      .then((res) => {
-        console.log(res);
-        if (res.status === 200) {
-          toast.info(res.data.message);
-        }
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  }
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    if (!values.email || !values.username || !values.password) {
+      toast.error("Enter required fields.");
+      return;
+    }
+
+    try {
+      const response = await api.post("/auth/register", values);
+      if (response.status === 200) {
+        toast.info(response.data.message);
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("An error occurred while registering.");
+    }
+  };
 
   return (
     <>
