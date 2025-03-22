@@ -1,7 +1,7 @@
 const siteConfig = {
-  title: "LegalEase",
+  title: "Legal Summarization",
   description:
-    "LegalEase is a legal platform that provides legal services to its clients.",
+    "Summarize legal documents with the help of AI, and save time and effort.",
 } as const;
 
 export { siteConfig };

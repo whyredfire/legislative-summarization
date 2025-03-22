@@ -7,17 +7,15 @@ import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Input } from "@/components/ui/input";
 
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { api, post } from "@/api/api";
+import { api } from "@/api/api";
 
 const SummarizePage = () => {
   const formSchema = z.object({
