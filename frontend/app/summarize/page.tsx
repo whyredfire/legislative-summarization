@@ -78,7 +78,11 @@ const SummarizePage = () => {
             )}
           />
           <div className="col-span-1 sm:col-span-2 flex justify-center">
-            <Button className="mt-4 mx-auto rounded-full" type="submit">
+            <Button
+              size={"lg"}
+              className="mt-4 mx-auto rounded-full"
+              type="submit"
+            >
               Summarize
             </Button>
           </div>

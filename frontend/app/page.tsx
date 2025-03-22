@@ -9,7 +9,7 @@ const Home = () => {
       <main className="text-center flex flex-col gap-4">
         <H1>{siteConfig.title}</H1>
         <LeadingText>{siteConfig.description}</LeadingText>
-        <Button className="rounded-full mx-auto cursor-pointer">
+        <Button size={"lg"} className="rounded-full mx-auto cursor-pointer">
           <Link href={"/summarize"}>Click here to start</Link>
         </Button>
       </main>
