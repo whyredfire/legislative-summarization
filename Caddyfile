@@ -1,0 +1,4 @@
+:3000 {
+    reverse_proxy /api/* http://express-server:3000
+    reverse_proxy /* http://nextjs-server:3000
+}

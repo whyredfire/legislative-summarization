@@ -1,4 +1,17 @@
 services:
+  caddy-server:
+    image: caddy
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - ./caddy_data:/data
+    ports:
+      - "3000:3000"
+
+  nextjs-server:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+
   express-server:
     build:
       context: ./express-server
@@ -12,8 +25,6 @@ services:
       MAIL_SENDER: ${MAIL_SENDER}
       OTP_SECRET: ${OTP_SECRET}
       DATABASE_URL: ${DATABASE_URL}
-    ports:
-      - "3000:3000"
     depends_on:
       - postgres-server
 

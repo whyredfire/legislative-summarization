@@ -1,1 +1,4 @@
 __pycache__
+.env
+psql_data
+caddy_data
