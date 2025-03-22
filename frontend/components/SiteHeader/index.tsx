@@ -44,17 +44,13 @@ const SiteHeader = async () => {
                   alignOffset={-50}
                   hideWhenDetached
                 >
-                  <DropdownMenuGroup className="*:data-[slot=dropdown-menu-item]:[&>svg]:text-muted-foreground">
-                    <DropdownMenuItem>
-                      <Link
-                        className="inline-flex items-center gap-2"
-                        href={"/"}
-                      >
-                        <HomeIcon />
-                        Home
-                      </Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuSeparator />
+                  <DropdownMenuItem>
+                    <Link className="inline-flex items-center gap-2" href={"/"}>
+                      <HomeIcon />
+                      Home
+                    </Link>
+                  </DropdownMenuItem>
+                  {!boolUserIsAuthenticated && (
                     <DropdownMenuItem>
                       <Link
                         className="inline-flex items-center gap-2"
@@ -64,7 +60,7 @@ const SiteHeader = async () => {
                         Login
                       </Link>
                     </DropdownMenuItem>
-                  </DropdownMenuGroup>
+                  )}
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
