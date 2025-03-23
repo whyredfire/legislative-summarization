@@ -101,4 +101,28 @@ router.get("/history", isAuthenticated, async (req, res) => {
   }
 });
 
+router.delete(
+  "/history/delete/:summary_id",
+  isAuthenticated,
+  async (req, res) => {
+    try {
+      const deleted_summary = await prisma.summarizationHistory.delete({
+        where: {
+          userId: req.userId,
+          id: req.params.summary_id,
+        },
+      });
+
+      res.send(200).json({
+        message: "summary deleted",
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({
+        message: "Something went wrong",
+      });
+    }
+  }
+);
+
 export default router;
