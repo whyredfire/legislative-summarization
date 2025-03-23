@@ -69,14 +69,14 @@ router.post("/abstractive", isAuthenticated, async (req, res) => {
 });
 
 router.get("/history", isAuthenticated, async (req, res) => {
-  const count = req.params.count;
+  const count = req.query.count;
 
   try {
     const results = await prisma.summarizationHistory.findMany({
       where: {
         userId: req.userId,
       },
-      take: count,
+      take: parseInt(count),
       orderBy: {
         createdAt: "desc",
       },
