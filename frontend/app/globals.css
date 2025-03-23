@@ -149,3 +149,20 @@
 .animation-gradient {
   animation: gradient 8s ease infinite;
 }
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply rounded-lg bg-neutral-500 transition-colors;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-neutral-600 cursor-default;
+}
