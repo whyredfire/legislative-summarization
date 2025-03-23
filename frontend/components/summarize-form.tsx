@@ -1,5 +1,8 @@
 "use client";
 
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -19,12 +22,14 @@ interface SummarizeFormProps {
   status: "abstractive" | "extractive";
 }
 
-const formSchema = z.object({
-  summarizeText: z.string().min(15, "Input must be at least 15 characters."),
-  summarizedText: z.string().optional(),
-});
-
 const SummarizeForm = ({ status }: SummarizeFormProps) => {
+  const [showSummary, setShowSummary] = useState(false);
+
+  const formSchema = z.object({
+    summarizeText: z.string().min(15, "Input must be at least 15 characters."),
+    summarizedText: z.string().optional(),
+  });
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -34,6 +39,7 @@ const SummarizeForm = ({ status }: SummarizeFormProps) => {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    setShowSummary(true);
     form.setValue("summarizedText", "Summarizing...");
     try {
       const response = await api.post(`/summary/${status}`, {
@@ -51,52 +57,69 @@ const SummarizeForm = ({ status }: SummarizeFormProps) => {
   };
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <FormField
-            control={form.control}
-            name="summarizeText"
-            render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  <Textarea
-                    {...field}
-                    autoCorrect="off"
-                    autoCapitalize="off"
-                    spellCheck="false"
-                    placeholder="Enter text to summarize"
-                    className="min-h-[30vh] max-h-[30vh] resize-none"
+    <>
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <div className="flex flex-wrap-reverse sm:flex-nowrap gap-4">
+            <div className="w-full sm:flex-1 transition-all duration-300">
+              <FormField
+                control={form.control}
+                name="summarizeText"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Textarea
+                        {...field}
+                        autoCorrect="off"
+                        autoCapitalize="off"
+                        spellCheck="false"
+                        placeholder="Enter text to summarize"
+                        className="min-h-[30vh] max-h-[30vh] resize-none"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            <AnimatePresence>
+              {showSummary && (
+                <motion.div
+                  initial={{ opacity: 0, width: "50%" }}
+                  animate={{ opacity: 1, width: "100%" }}
+                  transition={{ duration: 0.1 }}
+                  className="sm:w-[100%] sm:flex-1 transition-all duration-300"
+                >
+                  <FormField
+                    control={form.control}
+                    name="summarizedText"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormControl>
+                          <Textarea
+                            {...field}
+                            readOnly
+                            placeholder="Summarized text will appear here"
+                            className="min-h-[30vh] max-h-[30vh] resize-none bg-gray-100"
+                          />
+                        </FormControl>
+                      </FormItem>
+                    )}
                   />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="summarizedText"
-            render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  <Textarea
-                    {...field}
-                    readOnly
-                    placeholder="Summarized text will appear here"
-                    className="min-h-[30vh] max-h-[30vh] resize-none bg-gray-100"
-                  />
-                </FormControl>
-              </FormItem>
-            )}
-          />
-        </div>
-        <div className="flex justify-center">
-          <Button size="lg" className="mt-4 rounded-full" type="submit">
-            Summarize
-          </Button>
-        </div>
-      </form>
-    </Form>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+
+          <div className="flex justify-center">
+            <Button size="lg" className="mt-4 rounded-full" type="submit">
+              Summarize
+            </Button>
+          </div>
+        </form>
+      </Form>
+    </>
   );
 };
 
