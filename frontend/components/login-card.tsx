@@ -91,7 +91,9 @@ const LoginCard = () => {
                     <FormLabel>Password</FormLabel>
                     <Button variant={"link"}>
                       <MutedText>
-                        <Link href={"#!"}>Forgot your password?</Link>
+                        <Link href={"/signin/reset"}>
+                          Forgot your password?
+                        </Link>
                       </MutedText>
                     </Button>
                   </div>
@@ -102,7 +104,7 @@ const LoginCard = () => {
                 </FormItem>
               )}
             />
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col">
               <Button className="mt-2 mx-auto" type="submit">
                 Login
               </Button>
