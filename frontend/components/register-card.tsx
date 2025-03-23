@@ -23,12 +23,20 @@ import { useRouter } from "next/navigation";
 
 const RegisterCard = () => {
   const formSchema = z.object({
-    email: z.string().regex(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/),
-    username: z.string().regex(/^[a-zA-Z0-9._-]{3,}$/),
+    email: z
+      .string()
+      .regex(
+        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+        "Enter a valid email address."
+      ),
+    username: z
+      .string()
+      .regex(/^[a-zA-Z0-9]{3,}$/, "Must only contains characters and numbers."),
     password: z
       .string()
       .regex(
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>]).{8,}$/
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>]).{8,}$/,
+        "Must only contain at least 8 characters, one uppercase, one lowercase, one number, and one special character."
       ),
   });
 
@@ -76,7 +84,7 @@ const RegisterCard = () => {
               control={form.control}
               name="username"
               render={({ field }) => (
-                <FormItem>
+                <FormItem className="w-full">
                   <FormLabel>Username</FormLabel>
                   <FormControl>
                     <Input {...field} />
@@ -89,7 +97,7 @@ const RegisterCard = () => {
               control={form.control}
               name="email"
               render={({ field }) => (
-                <FormItem>
+                <FormItem className="w-full">
                   <FormLabel>Email</FormLabel>
                   <FormControl>
                     <Input type="email" {...field} />
@@ -102,7 +110,7 @@ const RegisterCard = () => {
               control={form.control}
               name="password"
               render={({ field }) => (
-                <FormItem>
+                <FormItem className="w-full">
                   <FormLabel>Password</FormLabel>
                   <FormControl>
                     <Input type="password" {...field} />
