@@ -25,29 +25,38 @@ router.post("/register", async (req, res) => {
       where: { email: email },
     });
 
-    if (!existingUser) {
-      const hashedPassword = hashPassword(email, password);
-
-      // create unverified user
-      const unverifiedUser = await prisma.user.create({
-        data: {
-          email: email,
-          username: username,
-          password: hashedPassword,
-          isVerified: false,
-        },
+    // return if user is verified
+    if (existingUser && existingUser.isVerified) {
+      return res.status(400).json({
+        message: "User already exists",
       });
-
-      sendOTP(email, "REGISTER");
-      const encodedUserId = btoa(unverifiedUser.id);
-
-      res.status(200).json({
-        message: "OTP sent sucessfully",
-        uniqueId: encodedUserId,
-      });
-    } else if (existingUser.isVerified) {
-      return res.status(409).json({ message: "User already exists" });
     }
+
+    const hashedPassword = hashPassword(email, password);
+
+    // create unverified user
+    const unverifiedUser = await prisma.user.upsert({
+      where: { email },
+      update: {
+        username,
+        password: hashedPassword,
+        isVerified: false,
+      },
+      create: {
+        email,
+        username,
+        password: hashedPassword,
+        isVerified: false,
+      },
+    });
+
+    sendOTP(email, "REGISTER");
+    const encodedUserId = btoa(unverifiedUser.id);
+
+    res.status(200).json({
+      message: "OTP sent sucessfully",
+      uniqueId: encodedUserId,
+    });
   } catch (error) {
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
       if (error.code === "P2002" && error.meta?.target) {
