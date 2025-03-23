@@ -22,7 +22,7 @@ export function sendOTP(emailId, type) {
     {
       from: MAIL_SENDER,
       to: emailId,
-      subject: "Verify your Legislative Summarization account",
+      subject: "Verify your LegalEase account",
       text: `Your OTP is ${getOTP(emailId, type)}`,
     },
     (error, info) => {
