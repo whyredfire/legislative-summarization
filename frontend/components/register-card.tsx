@@ -71,7 +71,7 @@ const RegisterCard = () => {
 
   return (
     <>
-      <Card className="px-8 py-4 w-full max-w-[400px]">
+      <Card className="px-8 py-4 max-w-min min-w-[400px]">
         <CardTitle className="text-center">
           <H3>Register</H3>
         </CardTitle>
