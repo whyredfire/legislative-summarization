@@ -94,8 +94,16 @@ const ResetPasswordCard = ({ email }: ResetPasswordCardProps) => {
     }
   };
 
-  const resendOTP = () => {
-    toast.success("OTP sent successfully.");
+  const resendOTP = async () => {
+    try {
+      const response = await api.post("/user/resetpassword", { email });
+      if (response.status === 200) {
+        toast.success("OTP sent successfully.");
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Error occured while resending OTP");
+    }
   };
 
   return (
