@@ -148,7 +148,7 @@ const ResetPasswordCard = ({ email }: ResetPasswordCardProps) => {
                 <FormItem>
                   <FormLabel>Enter new password</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input type="password" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -161,7 +161,7 @@ const ResetPasswordCard = ({ email }: ResetPasswordCardProps) => {
                 <FormItem>
                   <FormLabel>Re-enter your password</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input type="password" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
