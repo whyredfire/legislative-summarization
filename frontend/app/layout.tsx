@@ -5,7 +5,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/theme/theme-provider";
 
 import SiteHeader from "@/components/SiteHeader";
-import Footer from "@/components/Footer";
+import Footer from "@/components/footer";
 import { Toaster } from "@/components/ui/sonner";
 import { siteConfig } from "@/data/globals";
 
