@@ -93,7 +93,7 @@ const ResetPasswordCard = ({ email }: ResetPasswordCardProps) => {
     };
 
     try {
-      const response = await api.post("/user/resetpassword/verify", payload);
+      const response = await api.post("/user/password/forget/verify", payload);
       console.log("response", response);
       if (response.status === 200) {
         toast.success("Password has been resetted.");
@@ -108,7 +108,7 @@ const ResetPasswordCard = ({ email }: ResetPasswordCardProps) => {
 
   const resendOTP = async () => {
     try {
-      const response = await api.post("/user/resetpassword", { email });
+      const response = await api.post("/user/password/forget", { email });
       if (response.status === 200) {
         toast.success("OTP sent successfully.");
       }

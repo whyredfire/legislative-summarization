@@ -46,7 +46,7 @@ const ResetPassword = () => {
     const encodedEmail = btoa(values.email);
 
     try {
-      const response = await api.post("/user/resetpassword", values);
+      const response = await api.post("/user/password/forget", values);
       if (response.status === 200) {
         toast.success("OTP sent successfully.");
         navigator.push(`/signin/reset/${encodedEmail}`);
