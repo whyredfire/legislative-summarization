@@ -44,7 +44,6 @@ const ResetPassword = () => {
     }
 
     const encodedEmail = btoa(values.email);
-    console.log("btoa", encodedEmail);
 
     try {
       const response = await api.post("/user/resetpassword", values);
@@ -52,11 +51,12 @@ const ResetPassword = () => {
         toast.success("OTP sent successfully.");
         navigator.push(`/signin/reset/${encodedEmail}`);
         navigator.refresh();
-      }
-    } catch (error) {
-      if (error.status === 404) {
+      } else if (response.status === 404) {
         toast.error("Email address not found.");
       }
+    } catch (error) {
+      console.log(error);
+      toast.error("Error while resetting password.");
     }
   };
 
