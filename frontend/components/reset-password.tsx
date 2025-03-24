@@ -25,12 +25,25 @@ import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { api } from "@/api/api";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 interface ResetPasswordCardProps {
   email: string;
 }
 
 const ResetPasswordCard = ({ email }: ResetPasswordCardProps) => {
+  const [clicked, setClicked] = useState(false);
+
+  const handleClick = () => {
+    setClicked(false);
+  };
+
+  const debouncedHandleClick = () => {
+    setClicked(true);
+    toast.info("You can resend OTP only after 5 seconds.");
+    setTimeout(handleClick, 5000);
+  };
+
   const formSchema = z
     .object({
       email: z.string(),
@@ -65,6 +78,7 @@ const ResetPasswordCard = ({ email }: ResetPasswordCardProps) => {
       toast.error("Invalid email address");
       navigator.push("/signin");
       navigator.refresh();
+      return;
     }
 
     if (!values.otp || !values.password) {
@@ -135,7 +149,15 @@ const ResetPasswordCard = ({ email }: ResetPasswordCardProps) => {
                   </FormItem>
                 )}
               />
-              <Button type="button" variant={"secondary"} onClick={resendOTP}>
+              <Button
+                type="button"
+                variant={"secondary"}
+                onClick={() => {
+                  resendOTP();
+                  debouncedHandleClick();
+                }}
+                disabled={clicked}
+              >
                 Resend OTP
               </Button>
             </div>

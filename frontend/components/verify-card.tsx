@@ -24,8 +24,21 @@ import {
 import { api } from "@/api/api";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 const VerifyCard = ({ uniqueId }: { uniqueId: string }) => {
+  const [clicked, setClicked] = useState(false);
+
+  const handleClick = () => {
+    setClicked(false);
+  };
+
+  const debouncedHandleClick = () => {
+    setClicked(true);
+    toast.info("You can resend OTP only after 5 seconds.");
+    setTimeout(handleClick, 5000);
+  };
+
   const formSchema = z.object({
     uniqueId: z.string(),
     otp: z.string(),
@@ -52,6 +65,7 @@ const VerifyCard = ({ uniqueId }: { uniqueId: string }) => {
       if (response.status === 201) {
         toast.success("OTP verified");
         navigator.push("/signin");
+        return;
       }
     } catch (error) {
       console.error(error);
@@ -110,7 +124,11 @@ const VerifyCard = ({ uniqueId }: { uniqueId: string }) => {
               />
               <Button
                 type="button"
-                onClick={resendOTP}
+                onClick={() => {
+                  resendOTP();
+                  debouncedHandleClick();
+                }}
+                disabled={clicked}
                 className="mx-auto"
                 variant={"secondary"}
               >

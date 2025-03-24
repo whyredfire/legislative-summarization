@@ -30,6 +30,7 @@ import {
 import { toast } from "sonner";
 import { api } from "@/api/api";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 interface OTPDeleteDialogProps {
   open: boolean;
@@ -37,6 +38,18 @@ interface OTPDeleteDialogProps {
 }
 
 const OTPDeleteDialog = ({ open, onOpenChange }: OTPDeleteDialogProps) => {
+  const [clicked, setClicked] = useState(false);
+
+  const handleClick = () => {
+    setClicked(false);
+  };
+
+  const debouncedHandleClick = () => {
+    setClicked(true);
+    toast.info("You can resend OTP only after 5 seconds.");
+    setTimeout(handleClick, 5000);
+  };
+
   const navigator = useRouter();
 
   const formSchema = z.object({
@@ -67,6 +80,7 @@ const OTPDeleteDialog = ({ open, onOpenChange }: OTPDeleteDialogProps) => {
           "data=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
         navigator.push("/");
         navigator.refresh();
+        return;
       }
     } catch (error) {
       console.log(error);
@@ -133,7 +147,15 @@ const OTPDeleteDialog = ({ open, onOpenChange }: OTPDeleteDialogProps) => {
                     </FormItem>
                   )}
                 />
-                <Button onClick={resendOTP} variant={"secondary"} type="button">
+                <Button
+                  onClick={() => {
+                    resendOTP();
+                    debouncedHandleClick();
+                  }}
+                  disabled={clicked}
+                  variant={"secondary"}
+                  type="button"
+                >
                   Resend OTP
                 </Button>
               </div>
