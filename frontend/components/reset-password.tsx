@@ -94,6 +94,10 @@ const ResetPasswordCard = ({ email }: ResetPasswordCardProps) => {
     }
   };
 
+  const resendOTP = () => {
+    toast.success("OTP sent successfully.");
+  };
+
   return (
     <>
       <Card className="px-8 py-4 max-w-min min-w-[400px]">
@@ -102,29 +106,33 @@ const ResetPasswordCard = ({ email }: ResetPasswordCardProps) => {
         </CardHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 ">
-            <FormField
-              control={form.control}
-              name="otp"
-              render={({ field }) => (
-                <FormItem className="flex flex-col justify-center items-center">
-                  <FormLabel className="mb-2">Enter your OTP</FormLabel>
-                  <FormControl>
-                    <InputOTP maxLength={6} {...field}>
-                      <InputOTPGroup>
-                        <InputOTPSlot index={0} />
-                        <InputOTPSlot index={1} />
-                        <InputOTPSlot index={2} />
-                        <InputOTPSlot index={3} />
-                        <InputOTPSlot index={4} />
-                        <InputOTPSlot index={5} />
-                      </InputOTPGroup>
-                    </InputOTP>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
+            <div className="flex flex-row justify-between items-end gap-4">
+              <FormField
+                control={form.control}
+                name="otp"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Enter your OTP</FormLabel>
+                    <FormControl>
+                      <InputOTP maxLength={6} {...field}>
+                        <InputOTPGroup>
+                          <InputOTPSlot index={0} />
+                          <InputOTPSlot index={1} />
+                          <InputOTPSlot index={2} />
+                          <InputOTPSlot index={3} />
+                          <InputOTPSlot index={4} />
+                          <InputOTPSlot index={5} />
+                        </InputOTPGroup>
+                      </InputOTP>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <Button type="button" variant={"secondary"} onClick={resendOTP}>
+                Resend OTP
+              </Button>
+            </div>
             <FormField
               control={form.control}
               name="password"
