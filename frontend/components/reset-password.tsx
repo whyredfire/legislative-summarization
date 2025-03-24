@@ -73,15 +73,16 @@ const ResetPasswordCard = ({ email }: ResetPasswordCardProps) => {
       navigator.refresh();
     }
 
-    if (!values.otp || !values.password || !values.confirmPassword) {
+    if (!values.otp || !values.password) {
       toast.error("Enter required fields.");
       return;
     }
 
-    console.log(values);
+    // we remove confirmPassword from payload here
+    const { confirmPassword, ...payload } = values;
 
     try {
-      const response = await api.post("/user/resetpassword/verify", values);
+      const response = await api.post("/user/resetpassword/verify", payload);
       console.log("response", response);
       if (response.status === 200) {
         toast.success("Password has been resetted.");

@@ -48,11 +48,14 @@ const ResetPassword = () => {
       return;
     }
 
+    const encodedEmail = btoa(values.email);
+    console.log("btoa", encodedEmail);
+
     try {
       const response = await api.post("/user/resetpassword", values);
       if (response.status === 200) {
         toast.success("OTP sent successfully.");
-        navigator.push(`/signin/reset/${values.email}`);
+        navigator.push(`/signin/reset/${encodedEmail}`);
         navigator.refresh();
       }
     } catch (error: any) {

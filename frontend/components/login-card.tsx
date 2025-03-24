@@ -44,6 +44,8 @@ const LoginCard = () => {
       return;
     }
 
+    console.log(values);
+
     try {
       const response = await api.post("/auth/login", values);
       console.log(response);

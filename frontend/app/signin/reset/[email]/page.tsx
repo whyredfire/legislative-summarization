@@ -5,11 +5,17 @@ interface PageProps {
 }
 
 const VerifyOTP = async ({ params }: PageProps) => {
-  const emailAddress = await params;
+  const data = await params;
+  const encodedEmail = data.email;
+
+  // we need to use decodeURIComponent here because
+  // = gets converted to %3D, etc..
+  const decodedBase64 = decodeURIComponent(encodedEmail);
+  const decodedEmail = atob(decodedBase64);
 
   return (
     <>
-      <ResetPasswordCard email={emailAddress.email} />
+      <ResetPasswordCard email={decodedEmail} />
     </>
   );
 };
