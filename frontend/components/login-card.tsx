@@ -91,13 +91,15 @@ const LoginCard = () => {
                 <FormItem>
                   <div className="flex flex-row justify-between">
                     <FormLabel>Password</FormLabel>
-                    <Button variant={"link"}>
-                      <MutedText>
-                        <Link href={"/signin/reset"}>
-                          Forgot your password?
-                        </Link>
-                      </MutedText>
-                    </Button>
+                    <Link href={"/signin/reset"}>
+                      <Button
+                        type="button"
+                        className="w-fit !p-0 cursor-pointer"
+                        variant={"link"}
+                      >
+                        <MutedText>Forgot your password?</MutedText>
+                      </Button>
+                    </Link>
                   </div>
                   <FormControl>
                     <Input type="password" {...field} />
