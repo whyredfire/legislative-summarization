@@ -126,7 +126,7 @@ const ResetPasswordCard = ({ email }: ResetPasswordCardProps) => {
         </CardHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 ">
-            <div className="flex flex-row justify-between items-end gap-4">
+            <div className="flex flex-col sm:flex-row justify-between items-center sm:items-end gap-4">
               <FormField
                 control={form.control}
                 name="otp"

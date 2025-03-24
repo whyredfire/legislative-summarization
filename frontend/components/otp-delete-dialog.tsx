@@ -125,7 +125,7 @@ const OTPDeleteDialog = ({ open, onOpenChange }: OTPDeleteDialogProps) => {
               className="flex flex-col items-center gap-4 justify-center"
               onSubmit={form.handleSubmit(onSubmit)}
             >
-              <div className="flex flex-row gap-4 justify-between items-end">
+              <div className="flex flex-col sm:flex-row gap-4 justify-between items-center sm:items-end ">
                 <FormField
                   control={form.control}
                   name="otp"
@@ -159,7 +159,7 @@ const OTPDeleteDialog = ({ open, onOpenChange }: OTPDeleteDialogProps) => {
                   Resend OTP
                 </Button>
               </div>
-              <DialogDescription>
+              <DialogDescription className="text-center text-pretty sm:text-left">
                 This action cannot be undone. This will permanently delete your
                 account and remove your data from our servers.
               </DialogDescription>
