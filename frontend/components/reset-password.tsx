@@ -108,7 +108,7 @@ const ResetPasswordCard = ({ email }: ResetPasswordCardProps) => {
 
   return (
     <>
-      <Card className="px-8 py-4 max-w-min min-w-[400px]">
+      <Card className="px-8 py-4 max-w-min min-w-[350px]">
         <CardHeader className="font-bold text-center">
           Change your password
         </CardHeader>
