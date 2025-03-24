@@ -74,6 +74,42 @@ router.post("/register", async (req, res) => {
   }
 });
 
+router.post("/register/resend", async (req, res) => {
+  const userId = req.body.uniqueId;
+
+  if (!userId) {
+    return res.status(400).json({
+      message: "bad request format",
+    });
+  }
+
+  try {
+    const unverifiedUser = await prisma.user.findFirst({
+      where: {
+        userId: userId,
+      },
+    });
+
+    // check if user is verified
+    if (unverifiedUser.isVerified) {
+      return res.status(400).json({
+        message: "user already verified",
+      });
+    }
+
+    sendOTP(user.email, "REGISTER");
+
+    res.status(200).json({
+      message: "OTP re-sent successfully",
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      message: "Something went wrong",
+    });
+  }
+});
+
 router.post("/register/verify", async (req, res) => {
   const userId = req.body.uniqueId;
   const otp = req.body.otp;
