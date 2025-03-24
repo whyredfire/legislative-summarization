@@ -88,7 +88,7 @@ const SummarizeForm = ({ status }: SummarizeFormProps) => {
                 <motion.div
                   initial={{ opacity: 0, width: "50%" }}
                   animate={{ opacity: 1, width: "100%" }}
-                  transition={{ duration: 0.1 }}
+                  transition={{ duration: 0.3, ease: "easeInOut" }}
                   className="sm:w-[100%] sm:flex-1 transition-all duration-300"
                 >
                   <FormField
