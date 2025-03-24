@@ -5,10 +5,10 @@ interface PageProps {
 }
 
 const VerifyOTP = async ({ params }: PageProps) => {
-  const uniqueId = await params;
+  const data = await params;
   return (
     <>
-      <VerifyCard uniqueId={uniqueId.uniqueIdentifier} />
+      <VerifyCard uniqueId={data.uniqueIdentifier} />
     </>
   );
 };
