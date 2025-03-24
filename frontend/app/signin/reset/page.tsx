@@ -29,6 +29,8 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
 const ResetPassword = () => {
+  const navigator = useRouter();
+
   const formSchema = z.object({
     email: z.string(),
   });
@@ -47,17 +49,15 @@ const ResetPassword = () => {
     }
 
     try {
-      const response = await api.post("/auth/resetpassword", values);
-      console.log("response", response);
+      const response = await api.post("/user/resetpassword", values);
       if (response.status === 200) {
         toast.success("OTP sent successfully.");
-        useRouter().push(`/signin/reset/${values.email}`);
+        navigator.push(`/signin/reset/${values.email}`);
+        navigator.refresh();
       }
     } catch (error: any) {
       if (error.status === 404) {
         toast.error("Email address not found.");
-      } else {
-        toast.error("Something went wrong.");
       }
     }
   };
