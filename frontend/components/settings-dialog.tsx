@@ -12,6 +12,7 @@ import { useState } from "react";
 import OTPDeleteDialog from "./otp-delete-dialog";
 import { api } from "@/api/api";
 import { toast } from "sonner";
+import ChangePasswordDialog from "./change-password-dialog";
 
 interface SettingsDialogProps {
   open: boolean;
@@ -19,13 +20,19 @@ interface SettingsDialogProps {
 }
 
 export function SettingsDialog({ open, onOpenChange }: SettingsDialogProps) {
-  const [dialogOpen, setDialogOpen] = useState(false);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [changePasswordDialogOpen, setChangePasswordDialogOpen] =
+    useState(false);
 
-  const handleOpenDialog = async () => {
+  const handleChangePasswordDialog = () => {
+    setChangePasswordDialogOpen(true);
+  };
+
+  const handleOpenDeleteDialog = async () => {
     try {
       const response = await api.get("/user/delete");
       if (response.status === 200) {
-        setDialogOpen(true);
+        setDeleteDialogOpen(true);
         toast.success("OTP sent successfully.");
       } else {
         toast.error("Failed to delete account.");
@@ -52,25 +59,46 @@ export function SettingsDialog({ open, onOpenChange }: SettingsDialogProps) {
           <DialogHeader>
             <DialogTitle>Settings</DialogTitle>
             <DialogDescription>
-              Make changes to your settings here.
+              Make changes to your account here.
             </DialogDescription>
           </DialogHeader>
-          <DialogTitle>Delete account</DialogTitle>
-          <DialogDescription>
-            This action cannot be undone. This will permanently delete your
-            account and remove your data from our servers.
-          </DialogDescription>
-          <Button
-            onClick={() => {
-              handleOpenDialog();
-            }}
-            variant={"destructive"}
-          >
-            Delete
-          </Button>
+          <div className="flex flex-row justify-between items-center">
+            <DialogTitle className="h-full tracking-tight">
+              Change password
+            </DialogTitle>
+            <Button
+              size={"sm"}
+              onClick={() => {
+                handleChangePasswordDialog();
+              }}
+            >
+              Change
+            </Button>
+          </div>
+          <div className="flex flex-row justify-between items-center">
+            <DialogTitle className="h-full tracking-tight">
+              Delete account
+            </DialogTitle>
+            <Button
+              size={"sm"}
+              onClick={() => {
+                handleOpenDeleteDialog();
+              }}
+              variant={"destructive"}
+            >
+              Delete
+            </Button>
+          </div>
         </DialogContent>
       </Dialog>
-      <OTPDeleteDialog open={dialogOpen} onOpenChange={setDialogOpen} />
+      <OTPDeleteDialog
+        open={deleteDialogOpen}
+        onOpenChange={setDeleteDialogOpen}
+      />
+      <ChangePasswordDialog
+        open={changePasswordDialogOpen}
+        onOpenChange={setChangePasswordDialogOpen}
+      />
     </>
   );
 }

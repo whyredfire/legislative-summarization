@@ -159,6 +159,10 @@ const OTPDeleteDialog = ({ open, onOpenChange }: OTPDeleteDialogProps) => {
                   Resend OTP
                 </Button>
               </div>
+              <DialogDescription>
+                This action cannot be undone. This will permanently delete your
+                account and remove your data from our servers.
+              </DialogDescription>
               <Button className="mx-auto" variant={"destructive"}>
                 Delete your account
               </Button>
