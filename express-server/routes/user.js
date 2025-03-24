@@ -6,7 +6,44 @@ import { isAuthenticated } from "../middleware/authMiddleware";
 
 const router = express.Router();
 
-router.post("/resetpassword", async (req, res) => {
+router.post("/password/reset", isAuthenticated, async (req, res) => {
+  const oldPassword = req.body.oldPassword;
+  const newPassword = req.body.newPassword;
+
+  if (!oldPassword || !newPassword) {
+    return res.status(400).json({
+      message: "bad request format",
+    });
+  }
+
+  try {
+    const user = await prisma.user.findFirst({
+      where: { id: req.userId },
+    });
+
+    // verify old password
+    if (hashPassword(oldPassword) !== user.password) {
+      return res.status(401).json({
+        message: "Unauthorized",
+      });
+    }
+
+    const hashedNewPassword = hashPassword(newPassword);
+
+    // update password
+    const updatedPassword = await prisma.user.update({
+      where: { id: user.id },
+      data: { password: hashedNewPassword },
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      message: "Something went wrong",
+    });
+  }
+});
+
+router.post("/password/forget", async (req, res) => {
   const email = req.body.email;
 
   if (!email) {
@@ -16,9 +53,7 @@ router.post("/resetpassword", async (req, res) => {
   }
   try {
     const user = await prisma.user.findFirst({
-      where: {
-        email: email,
-      },
+      where: { email: email },
     });
 
     // check if user exists
@@ -40,7 +75,7 @@ router.post("/resetpassword", async (req, res) => {
   }
 });
 
-router.post("/resetpassword/verify", async (req, res) => {
+router.post("/password/forget/verify", async (req, res) => {
   const email = req.body.email;
   const otp = req.body.otp;
   const newPassword = req.body.password;
@@ -54,9 +89,7 @@ router.post("/resetpassword/verify", async (req, res) => {
   try {
     // find user
     const user = prisma.user.findFirst({
-      where: {
-        email: email,
-      },
+      where: { email: email },
     });
 
     // verify OTP
@@ -90,9 +123,7 @@ router.get("/delete", isAuthenticated, async (req, res) => {
 
   try {
     const userToDelete = await prisma.user.findFirst({
-      where: {
-        id: userId,
-      },
+      where: { id: userId },
     });
 
     sendOTP(userToDelete.email, "DELETE");
@@ -114,17 +145,13 @@ router.post("/delete/verify", isAuthenticated, async (req, res) => {
 
   try {
     const userToDelete = await prisma.user.findFirst({
-      where: {
-        id: userId,
-      },
+      where: { id: userId },
     });
 
     // delete user on verification
     if (verifyOTP(userToDelete.email, "DELETE", otp)) {
       const deleteUser = await prisma.user.delete({
-        where: {
-          id: userId,
-        },
+        where: { id: userId },
       });
 
       return res.status(200).json({
