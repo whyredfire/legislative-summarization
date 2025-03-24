@@ -13,6 +13,8 @@ import OTPDeleteDialog from "./otp-delete-dialog";
 import { api } from "@/api/api";
 import { toast } from "sonner";
 import ChangePasswordDialog from "./change-password-dialog";
+import { Switch } from "./ui/switch";
+import { incognitoFlag } from "@/flag";
 
 interface SettingsDialogProps {
   open: boolean;
@@ -88,6 +90,10 @@ export function SettingsDialog({ open, onOpenChange }: SettingsDialogProps) {
             >
               Delete
             </Button>
+          </div>
+          <div className="flex flex-row justify-between items-center">
+            <DialogTitle>Incognito Mode</DialogTitle>
+            <Switch />
           </div>
         </DialogContent>
       </Dialog>
