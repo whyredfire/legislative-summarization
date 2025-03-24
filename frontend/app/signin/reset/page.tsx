@@ -13,12 +13,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import {
-  Card,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { H3 } from "@/components/ui/typography";
@@ -58,7 +53,7 @@ const ResetPassword = () => {
         navigator.push(`/signin/reset/${encodedEmail}`);
         navigator.refresh();
       }
-    } catch (error: any) {
+    } catch (error) {
       if (error.status === 404) {
         toast.error("Email address not found.");
       }

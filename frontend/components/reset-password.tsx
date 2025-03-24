@@ -13,17 +13,11 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import {
-  Card,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardHeader } from "@/components/ui/card";
 
 import {
   InputOTP,
   InputOTPGroup,
-  InputOTPSeparator,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
 import { Button } from "@/components/ui/button";
@@ -78,8 +72,11 @@ const ResetPasswordCard = ({ email }: ResetPasswordCardProps) => {
       return;
     }
 
-    // we remove confirmPassword from payload here
-    const { confirmPassword, ...payload } = values;
+    const payload = {
+      email: values.email,
+      otp: values.otp,
+      password: values.password,
+    };
 
     try {
       const response = await api.post("/user/resetpassword/verify", payload);
@@ -89,7 +86,8 @@ const ResetPasswordCard = ({ email }: ResetPasswordCardProps) => {
         navigator.push("/signin");
         navigator.refresh();
       }
-    } catch (error: any) {
+    } catch (error) {
+      console.log(error);
       toast.error("An error occurred while resetting the password.");
     }
   };

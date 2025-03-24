@@ -25,7 +25,6 @@ import {
 import {
   InputOTP,
   InputOTPGroup,
-  InputOTPSeparator,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
 import { toast } from "sonner";
@@ -70,7 +69,7 @@ const OTPDeleteDialog = ({ open, onOpenChange }: OTPDeleteDialogProps) => {
         navigator.refresh();
       }
     } catch (error) {
-      console.error(error);
+      console.log(error);
       toast.error("Invalid OTP");
     }
   };
@@ -82,6 +81,7 @@ const OTPDeleteDialog = ({ open, onOpenChange }: OTPDeleteDialogProps) => {
         toast.success("OTP re-sent succesfully.");
       }
     } catch (error) {
+      console.log(error);
       toast.error("Error while resending OTP");
     }
   };
