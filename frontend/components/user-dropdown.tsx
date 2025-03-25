@@ -12,7 +12,7 @@ import {
 import { LogOut, SettingsIcon } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { SettingsDialog } from "./settings-dialog";
+import SettingsDialog from "./settings-dialog";
 import { useState } from "react";
 
 interface UserAvatarDropdownProps {

@@ -20,7 +20,7 @@ interface SettingsDialogProps {
   onOpenChange: (open: boolean) => void;
 }
 
-export function SettingsDialog({ open, onOpenChange }: SettingsDialogProps) {
+const SettingsDialog = ({ open, onOpenChange }: SettingsDialogProps) => {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [changePasswordDialogOpen, setChangePasswordDialogOpen] =
     useState(false);
@@ -106,4 +106,6 @@ export function SettingsDialog({ open, onOpenChange }: SettingsDialogProps) {
       />
     </>
   );
-}
+};
+
+export default SettingsDialog;
