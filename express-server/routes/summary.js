@@ -8,6 +8,7 @@ const router = express.Router();
 
 router.post("/extractive", isAuthenticated, async (req, res) => {
   const text = req.body.text;
+  const isIncognito = req.body.isIncognito;
 
   if (!text) {
     return res.status(400).json({
@@ -25,8 +26,10 @@ router.post("/extractive", isAuthenticated, async (req, res) => {
 
     const data = await response.json();
 
-    // save summary to db
-    saveSummary(req.userId, "extractive", text, data.summary);
+    if (!isIncognito) {
+      // save summary to db
+      saveSummary(req.userId, "extractive", text, data.summary);
+    }
 
     res.status(200).json(data);
   } catch (error) {
@@ -39,6 +42,7 @@ router.post("/extractive", isAuthenticated, async (req, res) => {
 
 router.post("/abstractive", isAuthenticated, async (req, res) => {
   const text = req.body.text;
+  const isIncognito = req.body.isIncognito;
 
   if (!text) {
     return res.status(400).json({
@@ -56,8 +60,10 @@ router.post("/abstractive", isAuthenticated, async (req, res) => {
 
     const data = await response.json();
 
-    // save summary to db
-    saveSummary(req.userId, "abstractive", text, data.summary);
+    if (!isIncognito) {
+      // save summary to db
+      saveSummary(req.userId, "abstractive", text, data.summary);
+    }
 
     res.status(200).json(data);
   } catch (error) {
