@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -17,14 +16,13 @@ import {
 } from "@/components/ui/form";
 import { api } from "@/api/api";
 import { toast } from "sonner";
+import { File } from "lucide-react";
 
 interface SummarizeFormProps {
   status: "abstractive" | "extractive";
 }
 
 const SummarizeForm = ({ status }: SummarizeFormProps) => {
-  const [showSummary, setShowSummary] = useState(false);
-
   const formSchema = z.object({
     summarizeText: z.string().min(15, "Input must be at least 15 characters."),
     summarizedText: z.string().optional(),
@@ -38,8 +36,9 @@ const SummarizeForm = ({ status }: SummarizeFormProps) => {
     },
   });
 
+  const showSummary = !!form.watch("summarizedText");
+
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    setShowSummary(true);
     form.setValue("summarizedText", "Summarizing...");
     try {
       const response = await api.post(`/summary/${status}`, {
@@ -54,6 +53,41 @@ const SummarizeForm = ({ status }: SummarizeFormProps) => {
       console.error(error);
       toast.error("An error occurred while summarizing.");
     }
+  };
+
+  const handleFileChange = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    const isFileTxt = file.name.endsWith(".txt");
+    const isFilePdf = file.name.endsWith(".pdf");
+
+    if (!(isFilePdf || isFileTxt)) {
+      toast.error("Only .txt and .pdf file are accepted!");
+      event.target.value = "";
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+      const response = await api.post("/upload/extract", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      if (response.status === 200) {
+        form.setValue("summarizeText", response.data.extracted_text);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+
+    // we require this to be null, as retrigger doesnt occur if target.value is same
+    event.target.value = "";
   };
 
   return (
@@ -110,6 +144,26 @@ const SummarizeForm = ({ status }: SummarizeFormProps) => {
                 </motion.div>
               )}
             </AnimatePresence>
+          </div>
+          <div className="text-center">
+            <Button
+              title="Select a file"
+              className="cursor-pointer"
+              type="button"
+              variant="secondary"
+              onClick={() => document.getElementById("inputFile")?.click()}
+            >
+              <File />
+              File
+            </Button>
+
+            <input
+              type="file"
+              className="hidden"
+              id="inputFile"
+              accept=".txt, .pdf"
+              onChange={handleFileChange}
+            />
           </div>
 
           <div className="flex justify-center">
