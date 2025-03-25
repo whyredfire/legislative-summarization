@@ -14,7 +14,6 @@ import { api } from "@/api/api";
 import { toast } from "sonner";
 import ChangePasswordDialog from "./change-password-dialog";
 import { Switch } from "./ui/switch";
-import { incognitoFlag } from "@/flag";
 
 interface SettingsDialogProps {
   open: boolean;
