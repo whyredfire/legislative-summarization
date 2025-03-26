@@ -108,7 +108,7 @@ const SummarizeForm = ({ status }: SummarizeFormProps) => {
                         autoCapitalize="off"
                         spellCheck="false"
                         placeholder="Enter text to summarize"
-                        className="min-h-[30vh] max-h-[30vh] resize-none"
+                        className="min-h-[30vh] max-h-[30vh] sm:min-h-[50vh] sm:max-h-[50vh] resize-none"
                       />
                     </FormControl>
                     <FormMessage />
@@ -122,7 +122,7 @@ const SummarizeForm = ({ status }: SummarizeFormProps) => {
                 <motion.div
                   initial={{ opacity: 0, width: "50%" }}
                   animate={{ opacity: 1, width: "100%" }}
-                  transition={{ duration: 0.3, ease: "easeInOut" }}
+                  transition={{ duration: 0.32, ease: "easeInOut" }}
                   className="sm:w-[100%] sm:flex-1 transition-all duration-300"
                 >
                   <FormField
@@ -135,7 +135,7 @@ const SummarizeForm = ({ status }: SummarizeFormProps) => {
                             {...field}
                             readOnly
                             placeholder="Summarized text will appear here"
-                            className="min-h-[30vh] max-h-[30vh] resize-none bg-gray-100"
+                            className="min-h-[30vh] max-h-[30vh] sm:min-h-[50vh] sm:max-h-[50vh] text-muted-foreground resize-none bg-gray-100"
                           />
                         </FormControl>
                       </FormItem>
