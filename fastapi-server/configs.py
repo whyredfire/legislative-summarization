@@ -1,3 +1,3 @@
 import os
 
-model_name = os.environ["MODEL_NAME"]
+model_name = os.environ.get("MODEL_NAME", "facebook/bart-large-cnn")
