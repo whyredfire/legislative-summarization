@@ -12,6 +12,7 @@ services:
       dockerfile: Dockerfile
     environment:
       FASTAPI_SERVER: ${FASTAPI_SERVER}
+      GEMINI_API_KEY: ${GEMINI_API_KEY}
       HASH_SALT: ${HASH_SALT}
       JWT_SECRET: ${JWT_SECRET}
       MAIL_USER: ${MAIL_USER}
