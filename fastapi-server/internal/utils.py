@@ -1,4 +1,3 @@
-from configs import model_name
 from collections import defaultdict
 from nltk.corpus import stopwords
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
@@ -10,6 +9,7 @@ import torch
 
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
+model_name = "whyredfire/legal-bart-summarizer"
 
 # load tokenizer and model
 tokenizer = AutoTokenizer.from_pretrained(model_name)

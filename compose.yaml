@@ -29,8 +29,6 @@ services:
     build:
       context: ./fastapi-server
       dockerfile: Dockerfile
-    environment:
-      MODEL_NAME: ${MODEL_NAME}
 
   postgres-server:
     image: postgres:17.2-alpine3.21
