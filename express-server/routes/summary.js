@@ -7,6 +7,7 @@ import fs from "fs";
 import PDFDocument from "pdfkit";
 import { addSummaryDetails } from "../utils/externalApi";
 import path from "path";
+import { s3Client } from "../configs/s3_client";
 
 const router = express.Router();
 

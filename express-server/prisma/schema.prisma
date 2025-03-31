@@ -23,12 +23,12 @@ model User {
 }
 
 model SummarizationHistory {
-  id        String   @id @default(uuid())
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId    String
-  title     String?
-  kind      String
-  inputText String
-  summary   String
-  createdAt DateTime @default(now())
+  id          String   @id @default(uuid())
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      String
+  title       String
+  status      String   @default("PENDING")
+  pdfKey      String?  @unique
+  pdfFilename String?
+  createdAt   DateTime @default(now())
 }
