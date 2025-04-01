@@ -1,0 +1,7 @@
+{
+  "name": "legalease",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ]
+}

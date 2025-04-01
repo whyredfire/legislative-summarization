@@ -1,0 +1,13 @@
+{
+  "name": "@legalease/common",
+  "module": "src/index.js",
+  "type": "module",
+  "private": true,
+  "dependencies": {
+    "@google/genai": "^0.7.0",
+    "@prisma/client": "^6.5.0"
+  },
+  "devDependencies": {
+    "prisma": "^6.5.0"
+  }
+}
