@@ -7,10 +7,12 @@ import { ModeSwitcher } from "./mode-switcher";
 import { siteConfig } from "@/data/globals";
 import { cookies } from "next/headers";
 import UserAvatarDropdown from "../user-dropdown";
+import { SidebarTrigger } from "../ui/sidebar";
 
 const SiteHeader = async () => {
-  const userDataCookie = (await cookies()).get("data");
-  const boolUserIsAuthenticated = (await cookies()).get("token");
+  const cookieStore = await cookies();
+  const userDataCookie = cookieStore.get("data");
+  const boolUserIsAuthenticated = cookieStore.get("token");
 
   let username = "";
   let email = "";
@@ -26,11 +28,14 @@ const SiteHeader = async () => {
 
   return (
     <>
-      <header className=" border-grid border-b-sidebar-border border">
+      <header className=" border-grid border-b-sidebar-border border shrink-0">
         <div className="container-wrapper container flex justify-between items-center p-4">
-          <Link href={"/"}>
-            <H4>{siteConfig.title}</H4>
-          </Link>
+          <div className="flex flex-row gap-2">
+            {boolUserIsAuthenticated && <SidebarTrigger className="-ml-1" />}
+            <Link href={"/"}>
+              <H4>{siteConfig.title}</H4>
+            </Link>
+          </div>
           <div className="flex justify-between items-center gap-4">
             <div className="flex items-center">
               {!boolUserIsAuthenticated ? (

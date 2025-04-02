@@ -3,11 +3,13 @@ import { Inter } from "next/font/google";
 
 import "./globals.css";
 import { ThemeProvider } from "@/theme/theme-provider";
-
-import SiteHeader from "@/components/SiteHeader";
-import Footer from "@/components/footer";
 import { Toaster } from "@/components/ui/sonner";
 import { siteConfig } from "@/data/globals";
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+
+import { AppSidebar } from "@/components/app-sidebar";
+import SiteHeader from "@/components/SiteHeader";
+import Footer from "@/components/footer";
 
 export const metadata: Metadata = {
   title: siteConfig.title,
@@ -24,21 +26,24 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
-        <div className="flex min-h-screen flex-col">
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <SiteHeader />
-            <div className="container-wrapper container flex flex-1 items-center justify-center">
-              {children}
-            </div>
-            <Footer />
-            <Toaster richColors position="top-center" />
-          </ThemeProvider>
-        </div>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <SidebarProvider defaultOpen={false}>
+            <AppSidebar />
+            <SidebarInset>
+              <SiteHeader />
+              <main className="flex flex-1 container container-wrapper flex-col justify-center items-center">
+                {children}
+              </main>
+            </SidebarInset>
+          </SidebarProvider>
+          <Footer />
+          <Toaster richColors position="top-center" />
+        </ThemeProvider>
       </body>
     </html>
   );
