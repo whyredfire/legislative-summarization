@@ -105,7 +105,7 @@ const SummarizeForm = ({ status }: SummarizeFormProps) => {
                       <Textarea
                         {...field}
                         autoCorrect="off"
-                        autoCapitalize="off"
+                        autoCapitalize="none"
                         spellCheck="false"
                         placeholder="Enter text to summarize"
                         className="min-h-[30vh] max-h-[30vh] sm:min-h-[50vh] sm:max-h-[50vh] resize-none"
