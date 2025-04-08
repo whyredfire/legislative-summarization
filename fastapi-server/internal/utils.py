@@ -1,22 +1,69 @@
 from collections import defaultdict
 from nltk.corpus import stopwords
-from .LegalBart import LegalBartSummarizer
+from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 
 import heapq
 import math
 import nltk
+import torch
 
+
+device = "cuda" if torch.cuda.is_available() else "cpu"
+model_name = "whyredfire/legal-bart-summarizer"
 
 # load tokenizer and model
-model_name = "whyredfire/legal-bart-summarizer"
-summarizer = LegalBartSummarizer(model_name)
+tokenizer = AutoTokenizer.from_pretrained(model_name)
+model = AutoModelForSeq2SeqLM.from_pretrained(model_name).to(device)
 
 
-def abstractive_summary(text):
-    return summarizer.summarize(text)
+def abstractive_summary(
+    text,
+    MAX_RATIO=0.3,
+    MIN_RATIO=0.1,
+    MAX_LENGTH=600,
+    MIN_LENGTH=30,
+    MAX_INPUT_LENGTH=1024,
+):
+    try:
+        # tokenize the input text
+        inputs = tokenizer(
+            text,
+            max_length=MAX_INPUT_LENGTH,
+            return_tensors="pt",
+            truncation=True,
+            padding=True,
+        ).to(device)
+
+        input_token_length = inputs.input_ids.shape[1]
+
+        # calculate summary length
+        calculated_max_len = int(input_token_length * MAX_RATIO)
+        calculated_min_len = int(input_token_length * MIN_RATIO)
+
+        dynamic_max_length = min(MAX_LENGTH, calculated_max_len)
+        dynamic_min_length = max(MIN_LENGTH, calculated_min_len)
+        dynamic_max_length = max(dynamic_min_length, dynamic_max_length)
+
+        # generate summary
+        summary_ids = model.generate(
+            inputs.input_ids,
+            attention_mask=inputs.attention_mask,
+            max_length=dynamic_max_length,
+            min_length=dynamic_min_length,
+            length_penalty=2.0,
+            num_beams=4,
+            early_stopping=True,
+        )
+
+        summary = tokenizer.decode(summary_ids[0], skip_special_tokens=True)
+
+        return summary.strip()
+
+    except Exception as e:
+        return ""
 
 
-def extractive_summary(text, summary_ratio=0.2, min_sentences=2, max_sentences=15):
+def extractive_summary(text, SUMMARY_RATIO=0.2, MIN_SENTENCES=2, MAX_SENTENCES=15):
     if not text or len(text.split()) < 10:
         return text
 
@@ -28,11 +75,11 @@ def extractive_summary(text, summary_ratio=0.2, min_sentences=2, max_sentences=1
             print("No sentences found in input text.")
             return ""
 
-        target_num_sentences = int(math.ceil(num_sentences_input * summary_ratio))
+        target_num_sentences = int(math.ceil(num_sentences_input * SUMMARY_RATIO))
 
         # ensure min/max sentences
-        target_num_sentences = max(target_num_sentences, min_sentences)
-        target_num_sentences = min(target_num_sentences, max_sentences)
+        target_num_sentences = max(target_num_sentences, MIN_SENTENCES)
+        target_num_sentences = min(target_num_sentences, MAX_SENTENCES)
 
         # ensure target summary isn't bigger than input text
         target_num_sentences = min(target_num_sentences, num_sentences_input)
