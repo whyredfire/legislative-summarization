@@ -16,51 +16,21 @@ tokenizer = AutoTokenizer.from_pretrained(model_name)
 model = AutoModelForSeq2SeqLM.from_pretrained(model_name).to(device)
 
 
-def abstractive_summary(
-    text,
-    MAX_RATIO=0.3,
-    MIN_RATIO=0.1,
-    MAX_LENGTH=600,
-    MIN_LENGTH=30,
-    MAX_INPUT_LENGTH=1024,
-):
-    try:
-        # tokenize the input text
-        inputs = tokenizer(
-            text,
-            max_length=MAX_INPUT_LENGTH,
-            return_tensors="pt",
-            truncation=True,
-            padding=True,
-        ).to(device)
+def abstractive_summary(text):
+    # tokenize and generate summary
+    inputs = tokenizer(text, return_tensors="pt", max_length=1024, truncation=True)
+    summary_ids = model.generate(
+        inputs["input_ids"],
+        max_length=150,
+        min_length=40,
+        num_beams=4,
+        early_stopping=True,
+        no_repeat_ngram_size=2,
+    )
 
-        input_token_length = inputs.input_ids.shape[1]
-
-        # calculate summary length
-        calculated_max_len = int(input_token_length * MAX_RATIO)
-        calculated_min_len = int(input_token_length * MIN_RATIO)
-
-        dynamic_max_length = min(MAX_LENGTH, calculated_max_len)
-        dynamic_min_length = max(MIN_LENGTH, calculated_min_len)
-        dynamic_max_length = max(dynamic_min_length, dynamic_max_length)
-
-        # generate summary
-        summary_ids = model.generate(
-            inputs.input_ids,
-            attention_mask=inputs.attention_mask,
-            max_length=dynamic_max_length,
-            min_length=dynamic_min_length,
-            length_penalty=2.0,
-            num_beams=4,
-            early_stopping=True,
-        )
-
-        summary = tokenizer.decode(summary_ids[0], skip_special_tokens=True)
-
-        return summary.strip()
-
-    except Exception as e:
-        return ""
+    # decode the summary
+    summary = tokenizer.decode(summary_ids[0], skip_special_tokens=True)
+    return summary
 
 
 def extractive_summary(text, SUMMARY_RATIO=0.2, MIN_SENTENCES=2, MAX_SENTENCES=15):
