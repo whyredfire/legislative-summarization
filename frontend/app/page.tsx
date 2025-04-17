@@ -15,10 +15,7 @@ const Home = () => {
           {siteConfig.description}
         </LeadingText>
         <Link href={"/summarize"}>
-          <Button
-            size={"lg"}
-            className="rounded-full font-bold mt-2 mx-auto cursor-pointer"
-          >
+          <Button size={"lg"} className="rounded-full font-bold mt-2 mx-auto">
             Get Started
           </Button>
         </Link>

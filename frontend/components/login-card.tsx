@@ -94,7 +94,7 @@ const LoginCard = () => {
                     <Link href={"/signin/reset"}>
                       <Button
                         type="button"
-                        className="w-fit !p-0 cursor-pointer"
+                        className="w-fit !p-0"
                         variant={"link"}
                       >
                         <MutedText>Forgot your password?</MutedText>

@@ -181,7 +181,6 @@ const SummarizeForm = ({ status }: SummarizeFormProps) => {
           <div className="flex flex-row gap-2 items-center justify-center">
             <Button
               title="Select a file"
-              className="cursor-pointer"
               type="button"
               variant="secondary"
               onClick={() => document.getElementById("inputFile")?.click()}
@@ -201,7 +200,6 @@ const SummarizeForm = ({ status }: SummarizeFormProps) => {
             {showDownloadPdf && (
               <Button
                 title="Download PDF"
-                className="cursor-pointer"
                 type="button"
                 variant={"secondary"}
                 onClick={() => downloadPdf(form.getValues())}
@@ -213,11 +211,7 @@ const SummarizeForm = ({ status }: SummarizeFormProps) => {
           </div>
 
           <div className="flex justify-center">
-            <Button
-              size="lg"
-              className="mt-4 rounded-full cursor-pointer"
-              type="submit"
-            >
+            <Button size="lg" className="mt-4 rounded-full " type="submit">
               Summarize
             </Button>
           </div>
