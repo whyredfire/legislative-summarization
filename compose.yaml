@@ -1,7 +1,7 @@
 services:
-  nextjs-server:
+  next-server:
     build:
-      context: ./frontend
+      context: ./next-server
       dockerfile: Dockerfile
     container_name: next-server
     ports:
