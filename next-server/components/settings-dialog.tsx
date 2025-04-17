@@ -25,11 +25,15 @@ const SettingsDialog = ({ open, onOpenChange }: SettingsDialogProps) => {
   const [changePasswordDialogOpen, setChangePasswordDialogOpen] =
     useState(false);
 
+  // so that we don't spam OTPs xD
+  const [deleteButtonLoading, setDeleteButtonLoading] = useState(false);
+
   const handleChangePasswordDialog = () => {
     setChangePasswordDialogOpen(true);
   };
 
   const handleOpenDeleteDialog = async () => {
+    setDeleteButtonLoading(true);
     try {
       const response = await api.get("/user/delete");
       if (response.status === 200) {
@@ -40,6 +44,8 @@ const SettingsDialog = ({ open, onOpenChange }: SettingsDialogProps) => {
       }
     } catch (error) {
       console.log(error);
+    } finally {
+      setDeleteButtonLoading(false);
     }
   };
 
@@ -82,6 +88,7 @@ const SettingsDialog = ({ open, onOpenChange }: SettingsDialogProps) => {
             </DialogTitle>
             <Button
               size={"sm"}
+              disabled={deleteButtonLoading}
               onClick={() => {
                 handleOpenDeleteDialog();
               }}
