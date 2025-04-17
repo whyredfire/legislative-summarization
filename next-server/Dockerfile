@@ -1,4 +1,6 @@
-FROM oven/bun:1
+FROM oven/bun:1 AS base
+
+FROM base AS build
 
 WORKDIR /usr/src/app
 
@@ -6,6 +8,14 @@ COPY bun.lock package.json .
 RUN bun install
 
 COPY . .
+
 RUN bun run build
 
-CMD ["bun", "run", "start"]
+FROM base AS production
+
+WORKDIR /usr/src/app
+
+COPY --from=build /usr/src/app/.next/standalone .
+COPY --from=build /usr/src/app/.next/static .next/static
+
+CMD ["bun", "run", "server.js"]
