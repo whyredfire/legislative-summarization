@@ -82,7 +82,7 @@ const VerifyCard = ({ uniqueId }: { uniqueId: string }) => {
         toast.success("OTP sent successfully.");
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
       toast.error("Error while resending OTP");
     }
   };

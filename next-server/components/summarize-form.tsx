@@ -90,7 +90,7 @@ const SummarizeForm = ({ status }: SummarizeFormProps) => {
         form.setValue("summarizeText", res.data.extracted_text);
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
 
     // we require this to be null, as retrigger doesnt occur if target.value is same
@@ -119,7 +119,7 @@ const SummarizeForm = ({ status }: SummarizeFormProps) => {
 
       window.URL.revokeObjectURL(url);
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
   };
 

@@ -94,14 +94,13 @@ const ResetPasswordCard = ({ email }: ResetPasswordCardProps) => {
 
     try {
       const response = await api.post("/user/password/forget/verify", payload);
-      console.log("response", response);
       if (response.status === 200) {
         toast.success("Password has been resetted.");
         navigator.push("/signin");
         navigator.refresh();
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
       toast.error("An error occurred while resetting the password.");
     }
   };
@@ -113,7 +112,7 @@ const ResetPasswordCard = ({ email }: ResetPasswordCardProps) => {
         toast.success("OTP sent successfully.");
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
       toast.error("Error occured while resending OTP");
     }
   };

@@ -55,7 +55,7 @@ const ResetPassword = () => {
         toast.error("Email address not found.");
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
       toast.error("Error while resetting password.");
     }
   };

@@ -83,7 +83,7 @@ const OTPDeleteDialog = ({ open, onOpenChange }: OTPDeleteDialogProps) => {
         return;
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
       toast.error("Invalid OTP");
     }
   };
@@ -95,7 +95,7 @@ const OTPDeleteDialog = ({ open, onOpenChange }: OTPDeleteDialogProps) => {
         toast.success("OTP re-sent succesfully.");
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
       toast.error("Error while resending OTP");
     }
   };

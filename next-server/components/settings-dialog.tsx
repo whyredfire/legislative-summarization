@@ -43,7 +43,7 @@ const SettingsDialog = ({ open, onOpenChange }: SettingsDialogProps) => {
         toast.error("Failed to delete account.");
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     } finally {
       setDeleteButtonLoading(false);
     }
