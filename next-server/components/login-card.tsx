@@ -21,6 +21,7 @@ import Link from "next/link";
 import { api } from "@/api/api";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 const LoginCard = () => {
   const navigator = useRouter();
@@ -38,17 +39,17 @@ const LoginCard = () => {
     },
   });
 
+  const [loginButtonLoading, setLoginButtonLoading] = useState(false);
+
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     if (!values.login || !values.password) {
       toast.error("Enter required fields.");
       return;
     }
-
-    console.log(values);
+    setLoginButtonLoading(true);
 
     try {
       const response = await api.post("/auth/login", values);
-      console.log(response);
       if (response.status === 200) {
         toast.success("Logged in successfully");
         navigator.push("/summarize");
@@ -60,6 +61,8 @@ const LoginCard = () => {
     } catch (error) {
       console.error(error);
       toast.error("An error occurred while logging in.");
+    } finally {
+      setLoginButtonLoading(false);
     }
   };
 
@@ -109,7 +112,11 @@ const LoginCard = () => {
               )}
             />
             <div className="flex flex-col">
-              <Button className="mt-2 mx-auto" type="submit">
+              <Button
+                disabled={loginButtonLoading}
+                className="mt-2 mx-auto"
+                type="submit"
+              >
                 Login
               </Button>
             </div>

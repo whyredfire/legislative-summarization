@@ -20,6 +20,7 @@ import { H3 } from "@/components/ui/typography";
 import { api } from "@/api/api";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 const RegisterCard = () => {
   const formSchema = z.object({
@@ -51,11 +52,15 @@ const RegisterCard = () => {
 
   const navigator = useRouter();
 
+  const [registerButtonLoading, setRegisterButtonLoading] = useState(false);
+
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     if (!values.email || !values.username || !values.password) {
       toast.error("Enter required fields.");
       return;
     }
+
+    setRegisterButtonLoading(true);
 
     try {
       const response = await api.post("/auth/register", values);
@@ -66,6 +71,8 @@ const RegisterCard = () => {
     } catch (error) {
       console.error(error);
       toast.error("An error occurred while registering.");
+    } finally {
+      setRegisterButtonLoading(false);
     }
   };
 
@@ -119,7 +126,11 @@ const RegisterCard = () => {
                 </FormItem>
               )}
             />
-            <Button className="mx-auto mt-4" type="submit">
+            <Button
+              disabled={registerButtonLoading}
+              className="mx-auto mt-4"
+              type="submit"
+            >
               Register
             </Button>
           </form>
