@@ -16,7 +16,8 @@ import {
 } from "@/components/ui/form";
 import { api } from "@/api/api";
 import { toast } from "sonner";
-import { File } from "lucide-react";
+import { File, FileText } from "lucide-react";
+import { useState } from "react";
 
 interface SummarizeFormProps {
   status: "abstractive" | "extractive";
@@ -38,20 +39,26 @@ const SummarizeForm = ({ status }: SummarizeFormProps) => {
 
   const showSummary = !!form.watch("summarizedText");
 
+  const [showDownloadPdf, setShowDownloadPdf] = useState<boolean>(false);
+
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     form.setValue("summarizedText", "Summarizing...");
+    setShowDownloadPdf(false);
+
     try {
-      const response = await api.post(`/summary/${status}`, {
+      const res = await api.post(`/summary/${status}`, {
         text: values.summarizeText,
       });
 
-      if (response.status === 200) {
-        form.setValue("summarizedText", response.data.summary);
+      if (res.status === 200) {
+        form.setValue("summarizedText", res.data.summary);
         toast.success("Text summarized successfully.");
+        setShowDownloadPdf(true);
       }
     } catch (error) {
       console.error(error);
       toast.error("An error occurred while summarizing.");
+      setShowDownloadPdf(false);
     }
   };
 
@@ -74,13 +81,13 @@ const SummarizeForm = ({ status }: SummarizeFormProps) => {
     formData.append("file", file);
 
     try {
-      const response = await api.post("/upload/extract", formData, {
+      const res = await api.post("/upload/extract", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
-      if (response.status === 200) {
-        form.setValue("summarizeText", response.data.extracted_text);
+      if (res.status === 200) {
+        form.setValue("summarizeText", res.data.extracted_text);
       }
     } catch (error) {
       console.log(error);
@@ -88,6 +95,32 @@ const SummarizeForm = ({ status }: SummarizeFormProps) => {
 
     // we require this to be null, as retrigger doesnt occur if target.value is same
     event.target.value = "";
+  };
+
+  const downloadPdf = async (values: z.infer<typeof formSchema>) => {
+    const payload = {
+      text: values.summarizeText,
+      summary: values.summarizedText,
+    };
+
+    // https://medium.com/@khushbooverma8319/download-api-file-in-frontend-91bd51e4ee19
+    try {
+      const res = await api.post("/summary/abstractive/pdf", payload, {
+        responseType: "blob",
+      });
+
+      const blob = new Blob([res.data], { type: "application/pdf" });
+      const url = window.URL.createObjectURL(blob);
+
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "summary.pdf";
+      link.click();
+
+      window.URL.revokeObjectURL(url);
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (
@@ -145,7 +178,7 @@ const SummarizeForm = ({ status }: SummarizeFormProps) => {
               )}
             </AnimatePresence>
           </div>
-          <div className="text-center">
+          <div className="flex flex-row gap-2 items-center justify-center">
             <Button
               title="Select a file"
               className="cursor-pointer"
@@ -164,10 +197,27 @@ const SummarizeForm = ({ status }: SummarizeFormProps) => {
               accept=".txt, .pdf"
               onChange={handleFileChange}
             />
+
+            {showDownloadPdf && (
+              <Button
+                title="Download PDF"
+                className="cursor-pointer"
+                type="button"
+                variant={"secondary"}
+                onClick={() => downloadPdf(form.getValues())}
+              >
+                <FileText />
+                Download PDF
+              </Button>
+            )}
           </div>
 
           <div className="flex justify-center">
-            <Button size="lg" className="mt-4 rounded-full" type="submit">
+            <Button
+              size="lg"
+              className="mt-4 rounded-full cursor-pointer"
+              type="submit"
+            >
               Summarize
             </Button>
           </div>
