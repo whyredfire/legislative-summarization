@@ -22,7 +22,6 @@
     "axios": "^1.8.4",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "flags": "^3.2.0",
     "framer-motion": "^12.7.3",
     "input-otp": "^1.4.2",
     "lucide-react": "^0.488.0",
