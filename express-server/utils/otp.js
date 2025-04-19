@@ -14,7 +14,7 @@ const transporter = nodemailer.createTransport({
 });
 
 function getOTP(emailId, type) {
-  return generateToken(emailId + type + OTP_SECRET);
+  return generateToken(emailId + type + OTP_SECRET, 600);
 }
 
 export function sendOTP(emailId, type) {
@@ -34,5 +34,5 @@ export function sendOTP(emailId, type) {
 }
 
 export function verifyOTP(emailId, type, otp) {
-  return verifyToken(emailId + type + OTP_SECRET, otp);
+  return verifyToken(emailId + type + OTP_SECRET, otp, 600);
 }
