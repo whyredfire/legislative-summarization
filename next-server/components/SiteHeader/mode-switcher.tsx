@@ -2,24 +2,19 @@
 
 import * as React from "react";
 import { MoonIcon, SunIcon } from "lucide-react";
-import { useTheme } from "next-themes";
 import { Button } from "../ui/button";
+import ThemeContext from "@/context/theme-provider";
 
 export function ModeSwitcher() {
-  const { setTheme, resolvedTheme } = useTheme();
-
-  const toggleTheme = React.useCallback(() => {
-    setTheme(resolvedTheme === "dark" ? "light" : "dark");
-  }, [resolvedTheme, setTheme]);
+  const { isDarkTheme, toggleThemeHandler } = React.useContext(ThemeContext);
 
   return (
     <Button
       variant="ghost"
       className="group/toggle h-8 w-8 px-0"
-      onClick={toggleTheme}
+      onClick={toggleThemeHandler}
     >
-      <SunIcon className="hidden [html.dark_&]:block" />
-      <MoonIcon className="hidden [html.light_&]:block" />
+      {isDarkTheme ? <SunIcon /> : <MoonIcon />}
       <span className="sr-only">Toggle theme</span>
     </Button>
   );
