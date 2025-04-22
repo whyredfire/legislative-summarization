@@ -10,16 +10,17 @@ export default async function middleware(req: NextRequest) {
   const isPublicRoute = publicRoutes.includes(path);
 
   const token = (await cookies()).get("token")?.value;
-  const isUserLoggedIn = Boolean(token);
 
-  if (isProtectedRoute && !isUserLoggedIn) {
+  // if not logged in, and tries to access to summarize page
+  // redirect to login
+  if (isProtectedRoute && !token) {
     return NextResponse.redirect(new URL("/signin", req.nextUrl));
   }
 
-  if (isPublicRoute && isUserLoggedIn) {
-    if (path === "/signin") {
-      return NextResponse.redirect(new URL("/", req.nextUrl));
-    }
+  // if authenticated, and tries to access login, redirect
+  // back to home page
+  if (isPublicRoute && token) {
+    return NextResponse.redirect(new URL("/", req.nextUrl));
   }
 
   return NextResponse.next();
