@@ -17,7 +17,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Card, CardTitle } from "@/components/ui/card";
 import { H3 } from "@/components/ui/typography";
-import { api } from "@/api/api";
+import { api } from "@/lib/axios";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { useState } from "react";

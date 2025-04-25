@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/dialog";
 import { useState } from "react";
 import OTPDeleteDialog from "./otp-delete-dialog";
-import { api } from "@/api/api";
+import { api } from "@/lib/axios";
 import { toast } from "sonner";
 import ChangePasswordDialog from "./change-password-dialog";
 import { Switch } from "./ui/switch";

@@ -14,7 +14,7 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
-import { api } from "@/api/api";
+import { api } from "@/lib/axios";
 import { toast } from "sonner";
 import { File, FileText } from "lucide-react";
 import { useState } from "react";

@@ -21,7 +21,7 @@ import {
   InputOTPSeparator,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
-import { api } from "@/api/api";
+import { api } from "@/lib/axios";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { useState } from "react";

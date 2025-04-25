@@ -24,7 +24,7 @@ import {
 } from "@/components/ui/form";
 
 import { toast } from "sonner";
-import { api } from "@/api/api";
+import { api } from "@/lib/axios";
 import { useRouter } from "next/navigation";
 import { Input } from "./ui/input";
 
