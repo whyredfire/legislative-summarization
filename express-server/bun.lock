@@ -6,10 +6,10 @@
       "dependencies": {
         "@google/genai": "^0.7.0",
         "@prisma/client": "^6.5.0",
-        "authenticator": "git+https://github.com/hridaya2004/otp-authenticator",
         "cookie-parser": "^1.4.7",
         "cors": "^2.8.5",
         "express": "^4.21.2",
+        "authenticator": "git+https://github.com/whyredfire/otp-authenticator.git",
         "jsonwebtoken": "^9.0.2",
         "multer": "^1.4.5-lts.2",
         "nodemailer": "^6.10.0",
@@ -108,7 +108,7 @@
 
     "array-flatten": ["array-flatten@1.1.1", "", {}, "sha512-PCVAQswWemu6UdxsDFFX/+gVeYqKAod3D3UVm91jHwynguOwAvYPhx8nNlM++NqRcK6CxxpUafjmhIdKiHibqg=="],
 
-    "authenticator": ["otp-authenticator@github:hridaya2004/otp-authenticator#9a774ac", { "dependencies": { "hi-base32": "^0.5.1", "notp": "^2.0.3" }, "peerDependencies": { "typescript": "^5" } }, "hridaya2004-otp-authenticator-9a774ac"],
+    "authenticator": ["authenticator@github:whyredfire/otp-authenticator#c484777", { "dependencies": { "hi-base32": "^0.5.1", "notp": "^2.0.3" }, "peerDependencies": { "typescript": "^5" } }, "whyredfire-node-authenticator-c484777"],
 
     "base64-js": ["base64-js@1.5.1", "", {}, "sha512-AKpaYlHn8t4SVbOHCy+b5+KKgvR4vrsD8vbvrbiQJps7fKDTkjkDry6ji0rUJjC0kzbNePLwzxq8iypo41qeWA=="],
 
