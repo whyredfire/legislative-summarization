@@ -84,9 +84,11 @@ router.post("/register/resend", async (req, res) => {
   }
 
   try {
+    const decodedUserId = atob(userId);
+
     const unverifiedUser = await prisma.user.findFirst({
       where: {
-        userId: userId,
+        id: decodedUserId,
       },
     });
 
@@ -97,7 +99,7 @@ router.post("/register/resend", async (req, res) => {
       });
     }
 
-    sendOTP(user.email, "REGISTER");
+    sendOTP(unverifiedUser.email, "REGISTER");
 
     res.status(200).json({
       message: "OTP re-sent successfully",
