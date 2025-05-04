@@ -71,10 +71,10 @@ const SummarizeForm = ({ status }: SummarizeFormProps) => {
     const file = event.target.files?.[0];
     if (!file) return;
 
-    const isFileTxt = file.name.endsWith(".txt");
-    const isFilePdf = file.name.endsWith(".pdf");
+    const isFileCompatible =
+      file.name.endsWith(".txt") || file.name.endsWith(".pdf");
 
-    if (!(isFilePdf || isFileTxt)) {
+    if (!isFileCompatible) {
       toast.error("Only .txt and .pdf file are accepted!");
       event.target.value = "";
       return;
