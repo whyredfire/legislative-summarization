@@ -16,8 +16,9 @@ import {
 } from "@/components/ui/form";
 import { api } from "@/lib/axios";
 import { toast } from "sonner";
-import { File, FileText } from "lucide-react";
+import { ClipboardIcon, File, FileText } from "lucide-react";
 import { useState } from "react";
+import { cn } from "@/lib/utils";
 
 interface SummarizeFormProps {
   status: "abstractive" | "extractive";
@@ -44,7 +45,7 @@ const SummarizeForm = ({ status }: SummarizeFormProps) => {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     form.setValue("summarizedText", "Summarizing...");
     setShowDownloadPdf(false);
-    setSummarizedButtonStatus(false);
+    setSummarizeButtonStatus(false);
 
     try {
       const res = await api.post(`/summary/${status}`, {
@@ -55,13 +56,13 @@ const SummarizeForm = ({ status }: SummarizeFormProps) => {
         form.setValue("summarizedText", res.data.summary);
         toast.success("Text summarized successfully.");
         setShowDownloadPdf(true);
-        setSummarizedButtonStatus(true);
+        setSummarizeButtonStatus(true);
       }
     } catch (error) {
       console.error(error);
       toast.error("An error occurred while summarizing.");
       setShowDownloadPdf(false);
-      setSummarizedButtonStatus(true);
+      setSummarizeButtonStatus(true);
     }
   };
 
@@ -127,7 +128,15 @@ const SummarizeForm = ({ status }: SummarizeFormProps) => {
   };
 
   // make sure summarize button is enabled first
-  const [summarizeButtonStatus, setSummarizedButtonStatus] = useState(true);
+  const [summarizeButtonEnabled, setSummarizeButtonStatus] = useState(true);
+  const copyToClipboard = async (text: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      toast.success("Copied to clipboard!");
+    } catch {
+      toast.error("Failed to copy text.");
+    }
+  };
 
   return (
     <>
@@ -162,7 +171,7 @@ const SummarizeForm = ({ status }: SummarizeFormProps) => {
                   initial={{ opacity: 0, width: "50%" }}
                   animate={{ opacity: 1, width: "100%" }}
                   transition={{ duration: 0.32, ease: "easeInOut" }}
-                  className="sm:w-[100%] sm:flex-1 transition-all duration-300"
+                  className="sm:w-[100%] sm:flex-1 relative transition-all duration-300"
                 >
                   <FormField
                     control={form.control}
@@ -180,6 +189,23 @@ const SummarizeForm = ({ status }: SummarizeFormProps) => {
                       </FormItem>
                     )}
                   />
+                  <Button
+                    variant={"outline"}
+                    className={cn(
+                      "absolute right-2 top-2 z-10 opacity-50 hover:opacity-100 hover:bg-white",
+                      {
+                        hidden: !summarizeButtonEnabled,
+                      }
+                    )}
+                    title="Copy summarized text"
+                    aria-label="Copy summarized text"
+                    type="button"
+                    onClick={() =>
+                      copyToClipboard(form.getValues("summarizedText") ?? "")
+                    }
+                  >
+                    <ClipboardIcon />
+                  </Button>
                 </motion.div>
               )}
             </AnimatePresence>
@@ -218,12 +244,12 @@ const SummarizeForm = ({ status }: SummarizeFormProps) => {
 
           <div className="flex justify-center">
             <Button
-              disabled={!summarizeButtonStatus}
+              disabled={!summarizeButtonEnabled}
               size="lg"
               className="mt-4 rounded-full "
               type="submit"
             >
-              Summarize
+              {!summarizeButtonEnabled ? "Processing" : "Summarize"}
             </Button>
           </div>
         </form>
