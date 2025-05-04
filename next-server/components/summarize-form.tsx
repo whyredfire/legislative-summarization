@@ -44,6 +44,7 @@ const SummarizeForm = ({ status }: SummarizeFormProps) => {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     form.setValue("summarizedText", "Summarizing...");
     setShowDownloadPdf(false);
+    setSummarizedButtonStatus(false);
 
     try {
       const res = await api.post(`/summary/${status}`, {
@@ -54,11 +55,13 @@ const SummarizeForm = ({ status }: SummarizeFormProps) => {
         form.setValue("summarizedText", res.data.summary);
         toast.success("Text summarized successfully.");
         setShowDownloadPdf(true);
+        setSummarizedButtonStatus(true);
       }
     } catch (error) {
       console.error(error);
       toast.error("An error occurred while summarizing.");
       setShowDownloadPdf(false);
+      setSummarizedButtonStatus(true);
     }
   };
 
@@ -122,6 +125,9 @@ const SummarizeForm = ({ status }: SummarizeFormProps) => {
       console.error(e);
     }
   };
+
+  // make sure summarize button is enabled first
+  const [summarizeButtonStatus, setSummarizedButtonStatus] = useState(true);
 
   return (
     <>
@@ -211,7 +217,12 @@ const SummarizeForm = ({ status }: SummarizeFormProps) => {
           </div>
 
           <div className="flex justify-center">
-            <Button size="lg" className="mt-4 rounded-full " type="submit">
+            <Button
+              disabled={!summarizeButtonStatus}
+              size="lg"
+              className="mt-4 rounded-full "
+              type="submit"
+            >
               Summarize
             </Button>
           </div>
