@@ -4,23 +4,23 @@
   "type": "module",
   "private": true,
   "devDependencies": {
-    "@types/bun": "^1.2.5"
+    "@types/bun": "^1.2.19"
   },
   "peerDependencies": {
-    "typescript": "^5.8.2"
+    "typescript": "^5.8.3"
   },
   "dependencies": {
-    "@google/genai": "^0.7.0",
-    "@prisma/client": "^6.5.0",
+    "@google/genai": "^1.11.0",
+    "@prisma/client": "^6.12.0",
     "authenticator": "^1.1.5",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
-    "express": "^4.21.2",
+    "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
-    "multer": "^1.4.5-lts.2",
-    "nodemailer": "^6.10.0",
+    "multer": "^2.0.2",
+    "nodemailer": "^7.0.5",
     "pdf.js-extract": "^0.2.1",
-    "pdfkit": "^0.16.0",
-    "prisma": "^6.5.0"
+    "pdfkit": "^0.17.1",
+    "prisma": "^6.12.0"
   }
 }
