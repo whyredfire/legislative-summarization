@@ -20,11 +20,16 @@ import { H3, MutedText } from "@/components/ui/typography";
 import Link from "next/link";
 import { api } from "@/lib/axios";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 
 const LoginCard = () => {
   const navigator = useRouter();
+
+  const searchParams = useSearchParams();
+
+  const username = searchParams.get("tempUserMail");
+  const password = searchParams.get("tempPass");
 
   const formSchema = z.object({
     login: z.string(),
@@ -34,8 +39,8 @@ const LoginCard = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      login: "",
-      password: "",
+      login: username || "",
+      password: password || "",
     },
   });
 

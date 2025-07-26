@@ -14,11 +14,30 @@ const Home = () => {
         <LeadingText className="text-pretty">
           {siteConfig.description}
         </LeadingText>
-        <Link href={"/summarize"}>
-          <Button size={"lg"} className="rounded-full font-bold mt-2 mx-auto">
-            Get Started
-          </Button>
-        </Link>
+        <div className="flex flex-row gap-2 items-center justify-center">
+          <Link
+            href={{
+              pathname: "/signin",
+              query: {
+                tempUserMail: process.env.TEMP_USER_MAIL,
+                tempPass: process.env.TEMP_PASS_PASSWORD,
+              },
+            }}
+          >
+            <Button
+              size={"lg"}
+              variant={"link"}
+              className="rounded-full font-bold mt-2"
+            >
+              Try now
+            </Button>
+          </Link>
+          <Link href={"/summarize"}>
+            <Button size={"lg"} className="rounded-full font-bold mt-2">
+              Get Started
+            </Button>
+          </Link>
+        </div>
       </main>
     </>
   );
