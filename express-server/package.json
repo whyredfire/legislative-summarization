@@ -12,7 +12,7 @@
   "dependencies": {
     "@google/genai": "^0.7.0",
     "@prisma/client": "^6.5.0",
-    "authenticator": "git+https://github.com/whyredfire/otp-authenticator.git",
+    "authenticator": "git+https://github.com/hridaya2004/otp-authenticator",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "express": "^4.21.2",
