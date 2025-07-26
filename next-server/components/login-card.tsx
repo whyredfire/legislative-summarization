@@ -21,9 +21,9 @@ import Link from "next/link";
 import { api } from "@/lib/axios";
 import { toast } from "sonner";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 
-const LoginCard = () => {
+const Login = () => {
   const navigator = useRouter();
 
   const searchParams = useSearchParams();
@@ -132,4 +132,10 @@ const LoginCard = () => {
   );
 };
 
-export default LoginCard;
+export default function LoginCard() {
+  return (
+    <Suspense>
+      <Login />
+    </Suspense>
+  );
+}
