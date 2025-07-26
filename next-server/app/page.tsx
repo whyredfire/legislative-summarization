@@ -20,7 +20,7 @@ const Home = () => {
               pathname: "/signin",
               query: {
                 tempUserMail: process.env.TEMP_USER_MAIL,
-                tempPass: process.env.TEMP_PASS_PASSWORD,
+                tempPass: process.env.TEMP_USER_PASSWORD,
               },
             }}
           >

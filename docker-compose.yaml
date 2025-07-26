@@ -1,19 +1,22 @@
 services:
   next-server:
+    container_name: ls-next-server
     build:
       context: ./next-server
       dockerfile: Dockerfile
-    container_name: next-server
+    environment:
+      TEMP_USER_MAIL: ${TEMP_USER_MAIL}
+      TEMP_USER_PASSWORD: ${TEMP_USER_PASSWORD}
     ports:
-      - "3000:3000"
+      - "3010:3000"
 
   express-server:
+    container_name: ls-express-server
     build:
       context: ./express-server
       dockerfile: Dockerfile
-    container_name: express-server
     environment:
-      FASTAPI_SERVER: 'http://fastapi-server:8000/'
+      FASTAPI_SERVER: "http://fastapi-server:8000/"
       GEMINI_API_KEY: ${GEMINI_API_KEY}
       HASH_SALT: ${HASH_SALT}
       JWT_SECRET: ${JWT_SECRET}
@@ -21,24 +24,24 @@ services:
       MAIL_PASS: ${MAIL_PASS}
       MAIL_SENDER: ${MAIL_SENDER}
       OTP_SECRET: ${OTP_SECRET}
-      DATABASE_URL: ${DATABASE_URL}
+      DATABASE_URL: "postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres-server:5432/${POSTGRES_DB}"
     ports:
-      - "5000:5000"
+      - "5010:5000"
     depends_on:
       - postgres-server
 
   fastapi-server:
+    container_name: ls-fastapi-server
     build:
       context: ./fastapi-server
       dockerfile: Dockerfile
-    container_name: fastapi-server
 
   postgres-server:
+    container_name: ls-postgres-server
     image: postgres:17.2-alpine3.21
-    container_name: postgres-server
     environment:
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
-      - "./psql-data:/var/lib/postgresql/data"
+      - "./psql_data:/var/lib/postgresql/data"
