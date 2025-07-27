@@ -45,10 +45,13 @@ export const makePDF = (caseData) => {
     doc
       .fontSize(10)
       .fillColor("gray")
-      .text("LegalEase - https://legalease.whyredfire.tech", {
-        align: "center",
-        underline: false,
-      })
+      .text(
+        "Legislative Summarization - https://legislative-summarization.whyredfire.tech",
+        {
+          align: "center",
+          underline: false,
+        }
+      )
       .fillColor("black");
 
     doc.moveDown(2.5);
