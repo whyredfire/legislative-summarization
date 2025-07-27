@@ -1,7 +1,9 @@
 services:
   next-server:
     container_name: ls-next-server
-    image: ghcr.io/whyredfire/ls-next-server:main
+    build:
+      context: ./next-server
+      dockerfile: Dockerfile
     environment:
       TEMP_USER_MAIL: ${TEMP_USER_MAIL}
       TEMP_USER_PASSWORD: ${TEMP_USER_PASSWORD}
@@ -10,7 +12,9 @@ services:
 
   express-server:
     container_name: ls-express-server
-    image: ghcr.io/whyredfire/ls-express-server:main
+    build:
+      context: ./express-server
+      dockerfile: Dockerfile
     environment:
       FASTAPI_SERVER: "http://fastapi-server:8000/"
       GEMINI_API_KEY: ${GEMINI_API_KEY}
@@ -28,7 +32,9 @@ services:
 
   fastapi-server:
     container_name: ls-fastapi-server
-    image: ghcr.io/whyredfire/ls-fastapi-server:main
+    build:
+      context: ./fastapi-server
+      dockerfile: Dockerfile
     environment:
       MODEL_NAME: ${MODEL_NAME}
     volumes:
