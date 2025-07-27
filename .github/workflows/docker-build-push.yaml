@@ -37,6 +37,7 @@ jobs:
         with:
           context: next-server
           push: true
+          platforms: linux/amd64,linux/arm64
           tags: ${{ steps.meta-next.outputs.tags }}
           labels: ${{ steps.meta-next.outputs.tags }}
           cache-from: type=registry,ref=ghcr.io/whyredfire/ls-next-server:buildcache
@@ -53,6 +54,7 @@ jobs:
         with:
           context: express-server
           push: true
+          platforms: linux/amd64,linux/arm64
           tags: ${{ steps.meta-express.outputs.tags }}
           labels: ${{ steps.meta-express.outputs.tags }}
           cache-from: type=registry,ref=ghcr.io/whyredfire/ls-express-server:buildcache
@@ -69,6 +71,7 @@ jobs:
         with:
           context: fastapi-server
           push: true
+          platforms: linux/amd64,linux/arm64
           tags: ${{ steps.meta-fastapi.outputs.tags }}
           labels: ${{ steps.meta-fastapi.outputs.tags }}
           cache-from: type=registry,ref=ghcr.io/whyredfire/ls-fastapi-server:buildcache
