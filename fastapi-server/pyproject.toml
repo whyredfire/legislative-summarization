@@ -1,0 +1,11 @@
+[project]
+name = "fastapi-server"
+version = "0.1.0"
+description = "FastAPI app for running summarization model."
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "fastapi[standard]>=0.116.1",
+    "nltk>=3.9.1",
+    "transformers>=4.54.0",
+]

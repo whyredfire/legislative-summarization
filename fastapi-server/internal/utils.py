@@ -1,15 +1,15 @@
+import heapq
+import math
+import os
+
+import nltk
+import torch
 from collections import defaultdict
 from nltk.corpus import stopwords
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 
-import heapq
-import math
-import nltk
-import torch
-
-
 device = "cuda" if torch.cuda.is_available() else "cpu"
-model_name = "whyredfire/legal-bart-summarizer"
+model_name = os.getenv("MODEL_NAME", "whyredfire/legal-bart-summarizer")
 
 # load tokenizer and model
 tokenizer = AutoTokenizer.from_pretrained(model_name)
@@ -88,15 +88,11 @@ def extractive_summary(text, SUMMARY_RATIO=0.2, MIN_SENTENCES=2, MAX_SENTENCES=1
         )
 
         # use lower case for stopwords comparison
-        stop_words = set(sw.lower() for sw in stopwords.words("english")).union(
-            custom_stopwords
-        )
+        stop_words = set(sw.lower() for sw in stopwords.words("english")).union(custom_stopwords)
 
         # calculate frequency table
         word_frequencies = defaultdict(int)
-        all_words = [
-            word.lower() for word in nltk.word_tokenize(text) if word.isalnum()
-        ]
+        all_words = [word.lower() for word in nltk.word_tokenize(text) if word.isalnum()]
         significant_words = [word for word in all_words if word not in stop_words]
 
         if not significant_words:
@@ -114,17 +110,13 @@ def extractive_summary(text, SUMMARY_RATIO=0.2, MIN_SENTENCES=2, MAX_SENTENCES=1
         # score sentences
         sentence_scores = defaultdict(float)
         for index, sentence in enumerate(sentences):
-            sentence_words = [
-                word.lower() for word in nltk.word_tokenize(sentence) if word.isalnum()
-            ]
+            sentence_words = [word.lower() for word in nltk.word_tokenize(sentence) if word.isalnum()]
             for word in sentence_words:
                 if word in word_frequencies:
                     sentence_scores[(index, sentence)] += word_frequencies[word]
 
         # select top sentences
-        summary_sentence_tuples = heapq.nlargest(
-            target_num_sentences, sentence_scores, key=sentence_scores.get
-        )
+        summary_sentence_tuples = heapq.nlargest(target_num_sentences, sentence_scores, key=sentence_scores.get)
 
         # join the sentences
         summary = " ".join([sentence for index, sentence in summary_sentence_tuples])

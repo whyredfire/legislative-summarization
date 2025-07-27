@@ -1,4 +1,7 @@
 __pycache__
 .env
+
+# docker volumes
+nltk_data
+huggingface
 psql_data
-caddy_data
