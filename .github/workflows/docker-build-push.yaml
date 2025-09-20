@@ -41,7 +41,7 @@ jobs:
           push: true
           platforms: linux/${{ matrix.arch }}
           tags: ghcr.io/whyredfire/ls-next-server:${{ matrix.arch }}
-          cache-from: type=registry,ref=ghcr.io/whyredfire/ls-next-server:buildcache
+          cache-from: type=registry,ref=ghcr.io/whyredfire/ls-next-server:buildcache-${{ matrix.arch }}
           cache-to: type=registry,ref=ghcr.io/whyredfire/ls-next-server:buildcache,mode=max
 
       - name: Build and Push Docker Image for express server
@@ -51,7 +51,7 @@ jobs:
           push: true
           platforms: linux/${{ matrix.arch }}
           tags: ghcr.io/whyredfire/ls-express-server:${{ matrix.arch }}
-          cache-from: type=registry,ref=ghcr.io/whyredfire/ls-express-server:buildcache
+          cache-from: type=registry,ref=ghcr.io/whyredfire/ls-express-server:buildcache-${{ matrix.arch }}
           cache-to: type=registry,ref=ghcr.io/whyredfire/ls-express-server:buildcache,mode=max
 
       - name: Build and Push Docker Image for fastapi server
@@ -61,7 +61,7 @@ jobs:
           push: true
           platforms: linux/${{ matrix.arch }}
           tags: ghcr.io/whyredfire/ls-fastapi-server:${{ matrix.arch }}
-          cache-from: type=registry,ref=ghcr.io/whyredfire/ls-fastapi-server:buildcache
+          cache-from: type=registry,ref=ghcr.io/whyredfire/ls-fastapi-server:buildcache-${{ matrix.arch }}
           cache-to: type=registry,ref=ghcr.io/whyredfire/ls-fastapi-server:buildcache,mode=max
 
   create-multiarch:
@@ -88,6 +88,7 @@ jobs:
       - name: Create multi-arch manifest for ${{ matrix.image }}
         run: |
           docker buildx imagetools create \
+            -t ghcr.io/whyredfire/${{ matrix.image }}:${{ github.sha }} \
             -t ghcr.io/whyredfire/${{ matrix.image }}:latest \
             ghcr.io/whyredfire/${{ matrix.image }}:amd64 \
             ghcr.io/whyredfire/${{ matrix.image }}:arm64
