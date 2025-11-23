@@ -6,10 +6,15 @@ on:
       - main
   workflow_dispatch:
 
+env:
+  IMAGE_PREFIX: ghcr.io/whyredfire/ls
+
 jobs:
   build-and-push:
     strategy:
       matrix:
+        arch: [amd64, arm64]
+        service: [next-server, express-server, fastapi-server]
         include:
           - arch: amd64
             runner: ubuntu-latest
@@ -22,7 +27,7 @@ jobs:
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Log in to GitHub Container Registry
         uses: docker/login-action@v3
@@ -34,35 +39,15 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Build and Push Docker Image for next server
+      - name: Build and Push Docker Image for ${{ matrix.service }}
         uses: docker/build-push-action@v6
         with:
-          context: next-server
+          context: ${{ matrix.service }}
           push: true
           platforms: linux/${{ matrix.arch }}
-          tags: ghcr.io/whyredfire/ls-next-server:${{ matrix.arch }}
-          cache-from: type=registry,ref=ghcr.io/whyredfire/ls-next-server:buildcache-${{ matrix.arch }}
-          cache-to: type=registry,ref=ghcr.io/whyredfire/ls-next-server:buildcache,mode=max
-
-      - name: Build and Push Docker Image for express server
-        uses: docker/build-push-action@v6
-        with:
-          context: express-server
-          push: true
-          platforms: linux/${{ matrix.arch }}
-          tags: ghcr.io/whyredfire/ls-express-server:${{ matrix.arch }}
-          cache-from: type=registry,ref=ghcr.io/whyredfire/ls-express-server:buildcache-${{ matrix.arch }}
-          cache-to: type=registry,ref=ghcr.io/whyredfire/ls-express-server:buildcache,mode=max
-
-      - name: Build and Push Docker Image for fastapi server
-        uses: docker/build-push-action@v6
-        with:
-          context: fastapi-server
-          push: true
-          platforms: linux/${{ matrix.arch }}
-          tags: ghcr.io/whyredfire/ls-fastapi-server:${{ matrix.arch }}
-          cache-from: type=registry,ref=ghcr.io/whyredfire/ls-fastapi-server:buildcache-${{ matrix.arch }}
-          cache-to: type=registry,ref=ghcr.io/whyredfire/ls-fastapi-server:buildcache,mode=max
+          tags: ${{ env.IMAGE_PREFIX }}-${{ matrix.service }}:${{ github.sha }}-${{ matrix.arch }}
+          cache-from: type=gha,scope=${{ matrix.service }}-${{ matrix.arch }}
+          cache-to: type=gha,mode=max,scope=${{ matrix.service }}-${{ matrix.arch }}
 
   create-multiarch:
     needs: build-and-push
@@ -70,9 +55,6 @@ jobs:
     permissions:
       contents: read
       packages: write
-    strategy:
-      matrix:
-        image: [ls-next-server, ls-express-server, ls-fastapi-server]
 
     steps:
       - name: Log in to GitHub Container Registry
@@ -85,10 +67,16 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Create multi-arch manifest for ${{ matrix.image }}
+      - name: Create multi-arch manifests
         run: |
-          docker buildx imagetools create \
-            -t ghcr.io/whyredfire/${{ matrix.image }}:${{ github.sha }} \
-            -t ghcr.io/whyredfire/${{ matrix.image }}:latest \
-            ghcr.io/whyredfire/${{ matrix.image }}:amd64 \
-            ghcr.io/whyredfire/${{ matrix.image }}:arm64
+          services=("next-server" "express-server" "fastapi-server")
+
+          for service in "${services[@]}"; do
+            echo "Creating manifest for $service..."
+
+            docker buildx imagetools create \
+              -t ${{ env.IMAGE_PREFIX }}-$service:latest \
+              -t ${{ env.IMAGE_PREFIX }}-$service:${{ github.sha }} \
+              ${{ env.IMAGE_PREFIX }}-$service:${{ github.sha }}-amd64 \
+              ${{ env.IMAGE_PREFIX }}-$service:${{ github.sha }}-arm64
+          done

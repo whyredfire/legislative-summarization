@@ -1,7 +1,7 @@
 import express from "express";
 import { verifyOTP, sendOTP } from "../utils/otp";
 import prisma from "../configs/prisma";
-import { hashPassword, verifyPassword } from "../utils/passwordHasher";
+import { hashPassword } from "../utils/passwordHasher";
 import { isAuthenticated } from "../middleware/authMiddleware";
 
 const router = express.Router();
@@ -31,7 +31,7 @@ router.post("/password/reset", isAuthenticated, async (req, res) => {
     const hashedNewPassword = hashPassword(newPassword);
 
     // update password
-    const updatedPassword = await prisma.user.update({
+    await prisma.user.update({
       where: { id: user.id },
       data: { password: hashedNewPassword },
     });
@@ -92,12 +92,18 @@ router.post("/password/forget/verify", async (req, res) => {
       where: { email: email },
     });
 
+    if (!user) {
+      return res.status(404).json({
+        message: "user not found",
+      });
+    }
+
     // verify OTP
     if (verifyOTP(email, "FORGOT", otp)) {
       const hashedPassword = hashPassword(email, newPassword);
 
       // update password
-      const updatedUser = await prisma.user.update({
+      await prisma.user.update({
         where: { email: email },
         data: { password: hashedPassword },
       });
@@ -150,7 +156,7 @@ router.post("/delete/verify", isAuthenticated, async (req, res) => {
 
     // delete user on verification
     if (verifyOTP(userToDelete.email, "DELETE", otp)) {
-      const deleteUser = await prisma.user.delete({
+      await prisma.user.delete({
         where: { id: userId },
       });
 

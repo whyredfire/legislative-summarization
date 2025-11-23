@@ -34,7 +34,9 @@ app.add_middleware(
 
 @app.exception_handler(HTTPException)
 async def validation_exception_handler(exc: HTTPException):
-    return JSONResponse(status_code=exc.status_code, content=jsonable_encoder(exc.detail))
+    return JSONResponse(
+        status_code=exc.status_code, content=jsonable_encoder(exc.detail)
+    )
 
 
 app.include_router(core.core)
@@ -48,4 +50,4 @@ async def status():
 if __name__ == "__main__":
     import uvicorn
 
-    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
+    uvicorn.run("main:app", host="0.0.0.0", port=8000)

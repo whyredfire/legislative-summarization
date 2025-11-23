@@ -109,7 +109,7 @@ router.get("/history", isAuthenticated, async (req, res) => {
       where: {
         userId: req.userId,
       },
-      take: parseInt(count),
+      take: parseInt(count, 10),
       orderBy: {
         createdAt: "desc",
       },
@@ -139,7 +139,7 @@ router.delete(
   isAuthenticated,
   async (req, res) => {
     try {
-      const deleted_summary = await prisma.summarizationHistory.delete({
+      await prisma.summarizationHistory.delete({
         where: {
           userId: req.userId,
           id: req.params.summary_id,
@@ -155,7 +155,7 @@ router.delete(
         message: "Something went wrong",
       });
     }
-  }
+  },
 );
 
 export default router;

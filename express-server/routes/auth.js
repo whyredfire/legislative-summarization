@@ -1,4 +1,4 @@
-import express from "express";
+import { Router } from "express";
 import { verifyOTP, sendOTP } from "../utils/otp";
 import prisma from "../configs/prisma";
 import { Prisma } from "@prisma/client";
@@ -6,7 +6,7 @@ import { hashPassword, verifyPassword } from "../utils/passwordHasher";
 import jwt from "jsonwebtoken";
 import { JWT_SECRET } from "../configs/vars";
 
-const router = express.Router();
+const router = Router();
 
 router.post("/register", async (req, res) => {
   const email = req.body.email;
@@ -26,7 +26,7 @@ router.post("/register", async (req, res) => {
     });
 
     // return if user is verified
-    if (existingUser && existingUser.isVerified) {
+    if (existingUser?.isVerified) {
       return res.status(400).json({
         message: "User already exists",
       });

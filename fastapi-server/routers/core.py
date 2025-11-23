@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 
-from internal.utils import extractive_summary, abstractive_summary
+from internal.utils import abstractive_summary, extractive_summary
 
 core = APIRouter(prefix="/api/summary", tags=["core"])
 

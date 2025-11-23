@@ -7,9 +7,9 @@ export const getDetailedSummary = async (text, summary) => {
     ---
     ${text}
     ---
-    
+
     Generate a response containing *only* a single, raw JSON object summarizing the extracted details. The JSON object must strictly adhere to the following schema. Populate the values *using only information explicitly found* within the provided input text. If specific information for a field is not present in the text, use an empty string \\"\\" for string fields or an empty array [] for the timeline field.
-    
+
     JSON Schema:
     {
       "name": "string - The official name of the legal case mentioned in the text. Use an empty string \\"\\" if no name is found.",
@@ -18,7 +18,7 @@ export const getDetailedSummary = async (text, summary) => {
       "court_details": "string - The court(s) involved, as mentioned in the text. Use an empty string \\"\\" if none are found.",
       "verdict": "string - The final decision, judgment, or outcome described in the text. Use an empty string \\"\\" if none is found."
     }
-    
+
     Your response must contain *only* the raw JSON object. Do not include any introductory text, explanations, markdown formatting (like \\\`\\\`\\\`json\\\`\\\`\\\`), or any other characters outside the JSON structure itself.
     `;
 
@@ -26,11 +26,11 @@ export const getDetailedSummary = async (text, summary) => {
 
   // remove markdown formatting
   var res = JSON.parse(
-    response.text.replace(/^\`\`\`json\s*/, "").replace(/\`\`\`$/, "")
+    response.text.replace(/^```json\s*/, "").replace(/```$/, ""),
   );
 
   // append summary
-  res["summary"] = summary;
+  res.summary = summary;
   return res;
 };
 
@@ -50,7 +50,7 @@ export const makePDF = (caseData) => {
         {
           align: "center",
           underline: false,
-        }
+        },
       )
       .fillColor("black");
 

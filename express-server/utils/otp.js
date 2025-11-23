@@ -25,11 +25,11 @@ export function sendOTP(emailId, type) {
       subject: "Verify your LegalEase account",
       text: `Your OTP is ${getOTP(emailId, type)}`,
     },
-    (error, info) => {
+    (error) => {
       if (error) {
         console.error("Error sending email: ", error);
       }
-    }
+    },
   );
 }
 
