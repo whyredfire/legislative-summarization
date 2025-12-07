@@ -4,10 +4,19 @@ on:
   push:
     branches:
       - main
+    paths:
+      - .github/workflows/docker-build-push.yaml
+      - express-server/**/*
+      - fastapi-server/**/*
+      - next-server/**/*
   workflow_dispatch:
 
 env:
   IMAGE_PREFIX: ghcr.io/whyredfire/ls
+
+permissions:
+  contents: read
+  packages: write
 
 jobs:
   build-and-push:
@@ -21,9 +30,6 @@ jobs:
           - arch: arm64
             runner: ubuntu-24.04-arm
     runs-on: ${{ matrix.runner }}
-    permissions:
-      contents: read
-      packages: write
 
     steps:
       - name: Checkout Code
@@ -52,9 +58,6 @@ jobs:
   create-multiarch:
     needs: build-and-push
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
 
     steps:
       - name: Log in to GitHub Container Registry
