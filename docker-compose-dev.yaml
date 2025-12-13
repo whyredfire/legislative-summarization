@@ -38,8 +38,8 @@ services:
     environment:
       MODEL_NAME: ${MODEL_NAME}
     volumes:
-      - ./nltk_data:/root/nltk_data
-      - ./huggingface:/root/.cache/huggingface
+      - ./nltk_data:/home/nonroot/nltk_data
+      - ./huggingface:/home/nonroot/.cache/huggingface
 
   postgres-server:
     container_name: ls-postgres-server

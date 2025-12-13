@@ -1,8 +1,10 @@
-FROM oven/bun:slim
+FROM oven/bun:alpine
 
-WORKDIR /usr/src/app
+WORKDIR /app
 
-RUN apt-get update -y && apt-get install -y openssl && rm -rf /var/lib/apt/lists/*
+# Add user
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
 
 COPY bun.lock package.json ./
 RUN bun install --production
