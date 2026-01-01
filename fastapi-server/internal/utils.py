@@ -23,7 +23,7 @@ def abstractive_summary(text):
         inputs["input_ids"],
         max_length=150,
         min_length=40,
-        num_beams=4,
+        num_beams=1,
         early_stopping=True,
         no_repeat_ngram_size=2,
     )
