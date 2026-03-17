@@ -5,8 +5,8 @@ description = "FastAPI app for running summarization model."
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
-    "fastapi>=0.124.2",
-    "nltk>=3.9.2",
-    "transformers>=4.57.3",
-    "uvicorn>=0.38.0",
+    "fastapi>=0.135.1",
+    "nltk>=3.9.3",
+    "transformers>=5.3.0",
+    "uvicorn>=0.42.0",
 ]
