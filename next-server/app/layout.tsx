@@ -8,8 +8,7 @@ import Footer from "@/components/footer";
 import { Toaster } from "@/components/ui/sonner";
 import { siteConfig } from "@/data/globals";
 import { ThemeProvider } from "@/context/theme-provider";
-
-import { unstable_ViewTransition as ViewTransition } from "react";
+import { ViewTransition } from "react";
 
 export const metadata: Metadata = {
   title: siteConfig.title,
