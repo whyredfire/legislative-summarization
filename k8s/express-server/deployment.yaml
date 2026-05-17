@@ -1,0 +1,93 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: express-server
+  labels:
+    app: express-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: express-server
+  template:
+    metadata:
+      labels:
+        app: express-server
+    spec:
+      containers:
+        - name: express-server
+          image: ghcr.io/whyredfire/ls-express-server:latest
+          ports:
+            - containerPort: 5000
+          env:
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: cnpg-cluster-app
+                  key: uri
+            - name: FASTAPI_SERVER
+              value: "http://fastapi-server:8000/"
+            - name: HASH_SALT
+              valueFrom:
+                secretKeyRef:
+                  name: auth-secret
+                  key: HASH_SALT
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: auth-secret
+                  key: JWT_SECRET
+            - name: OTP_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: auth-secret
+                  key: OTP_SECRET
+            - name: GEMINI_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: gemini-secret
+                  key: GEMINI_API_KEY
+            - name: MAIL_USER
+              valueFrom:
+                secretKeyRef:
+                  name: mail-secret
+                  key: MAIL_USER
+            - name: MAIL_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: mail-secret
+                  key: MAIL_PASS
+            - name: MAIL_SENDER
+              valueFrom:
+                secretKeyRef:
+                  name: mail-secret
+                  key: MAIL_SENDER
+            - name: TEMP_USER_MAIL
+              valueFrom:
+                configMapKeyRef:
+                  name: temp-user-config
+                  key: TEMP_USER_MAIL
+            - name: TEMP_USER_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  name: temp-user-config
+                  key: TEMP_USER_PASSWORD
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 5000
+            initialDelaySeconds: 10
+            periodSeconds: 15
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 5000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi

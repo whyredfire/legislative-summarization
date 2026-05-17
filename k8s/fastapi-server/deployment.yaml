@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fastapi-server
+  labels:
+    app: fastapi-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fastapi-server
+  template:
+    metadata:
+      labels:
+        app: fastapi-server
+    spec:
+      containers:
+        - name: fastapi-server
+          image: ghcr.io/whyredfire/ls-fastapi-server:latest
+          ports:
+            - containerPort: 8000
+          env:
+            - name: MODEL_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: fastapi-config
+                  key: MODEL_NAME
+          volumeMounts:
+            - name: model-cache
+              mountPath: /home/nonroot/.cache/huggingface
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 30
+            periodSeconds: 15
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 15
+            periodSeconds: 10
+          resources:
+            requests:
+              cpu: 500m
+              memory: 1Gi
+            limits:
+              cpu: "3"
+              memory: 4Gi
+      volumes:
+        - name: model-cache
+          persistentVolumeClaim:
+            claimName: fastapi-model-cache

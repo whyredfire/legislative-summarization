@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: temp-user-config
+data:
+  TEMP_USER_MAIL: "demo@example.com"
+  TEMP_USER_PASSWORD: "demo123"

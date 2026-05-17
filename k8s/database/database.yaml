@@ -1,0 +1,9 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Database
+metadata:
+  name: legislative-db
+spec:
+  name: legislative_db
+  cluster:
+    name: cnpg-cluster
+  owner: app
