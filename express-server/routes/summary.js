@@ -20,6 +20,7 @@ router.post("/extractive", isAuthenticated, async (req, res) => {
   try {
     const response = await fetch(`${FASTAPI_SERVER}/api/summary/extractive`, {
       method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         text: req.body.text,
       }),
@@ -54,6 +55,7 @@ router.post("/abstractive", isAuthenticated, async (req, res) => {
   try {
     const response = await fetch(`${FASTAPI_SERVER}/api/summary/abstractive`, {
       method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         text: req.body.text,
       }),
