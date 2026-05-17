@@ -17,4 +17,4 @@ RUN mkdir -p uploads && chown expressjs:expressjs uploads
 
 USER expressjs
 
-CMD ["sh", "-c", "bunx prisma migrate deploy && bun run index.js"]
+CMD ["sh", "-c", "bunx prisma migrate deploy && bun run seed.js && bun run index.js"]

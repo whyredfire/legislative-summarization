@@ -14,8 +14,8 @@ services:
       context: ./next-server
       dockerfile: Dockerfile
     environment:
-      TEMP_USER_MAIL: ${TEMP_USER_MAIL}
-      TEMP_USER_PASSWORD: ${TEMP_USER_PASSWORD}
+      TEMP_USER_MAIL: ${TEMP_USER_MAIL:-demo@example.com}
+      TEMP_USER_PASSWORD: ${TEMP_USER_PASSWORD:-demo123}
     ports:
       - "3000:3000"
     depends_on:
@@ -36,6 +36,8 @@ services:
       MAIL_PASS: ${MAIL_PASS}
       MAIL_SENDER: ${MAIL_SENDER}
       OTP_SECRET: ${OTP_SECRET:-t0ps3cr3t}
+      TEMP_USER_MAIL: ${TEMP_USER_MAIL:-demo@example.com}
+      TEMP_USER_PASSWORD: ${TEMP_USER_PASSWORD:-demo123}
       DATABASE_URL: "postgresql://${POSTGRES_USER:-legislative_user}:${POSTGRES_PASSWORD:-legislative_password}@postgres-server:5432/${POSTGRES_DB:-legislative_db}"
     ports:
       - "5000:5000"
