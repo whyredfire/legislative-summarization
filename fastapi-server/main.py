@@ -26,9 +26,9 @@ async def validation_exception_handler(exc: HTTPException):
 app.include_router(core.core)
 
 
-@app.get("/")
-async def status():
-    return {"message": "ok"}
+@app.get("/health")
+async def health():
+    return {"status": "ok"}
 
 
 if __name__ == "__main__":

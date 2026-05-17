@@ -9,14 +9,14 @@ const port = 5000;
 app.use(
   cors({
     origin: "*",
-  })
+  }),
 );
 app.use(cookieParser());
 app.use(express.json());
 app.use("/api", customRouter);
 
-app.get("/", (req, res) => {
-  res.send("Hello World!");
+app.get("/health", (req, res) => {
+  res.json({ status: "ok" });
 });
 
 app.listen(port, () => {
