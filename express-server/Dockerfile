@@ -2,16 +2,19 @@ FROM oven/bun:alpine
 
 WORKDIR /app
 
-# Add user
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
+# Add non-root user
+RUN adduser -D -u 1001 expressjs
 
-COPY bun.lock package.json ./
+COPY --chown=expressjs:expressjs bun.lock package.json ./
 RUN bun install --production
 
-COPY prisma .
+COPY --chown=expressjs:expressjs prisma .
 RUN bunx prisma generate
 
-COPY . .
+COPY --chown=expressjs:expressjs . .
 
-CMD ["sh", "-c", "sleep 5 && bunx prisma migrate deploy && bun run index.js"]
+RUN mkdir -p uploads && chown expressjs:expressjs uploads
+
+USER expressjs
+
+CMD ["sh", "-c", "bunx prisma migrate deploy && bun run index.js"]

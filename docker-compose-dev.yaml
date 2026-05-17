@@ -1,4 +1,13 @@
 services:
+  caddy:
+    container_name: ls-caddy
+    image: caddy:alpine
+    ports:
+      - 8080:80
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+    restart: unless-stopped
+
   next-server:
     container_name: ls-next-server
     build:
@@ -9,6 +18,9 @@ services:
       TEMP_USER_PASSWORD: ${TEMP_USER_PASSWORD}
     ports:
       - "3000:3000"
+    depends_on:
+      postgres-server:
+        condition: service_healthy
 
   express-server:
     container_name: ls-express-server
@@ -18,17 +30,18 @@ services:
     environment:
       FASTAPI_SERVER: "http://fastapi-server:8000/"
       GEMINI_API_KEY: ${GEMINI_API_KEY}
-      HASH_SALT: ${HASH_SALT}
-      JWT_SECRET: ${JWT_SECRET}
+      HASH_SALT: ${HASH_SALT:-t0ps3cr3t}
+      JWT_SECRET: ${JWT_SECRET:-t0ps3cr3t}
       MAIL_USER: ${MAIL_USER}
       MAIL_PASS: ${MAIL_PASS}
       MAIL_SENDER: ${MAIL_SENDER}
-      OTP_SECRET: ${OTP_SECRET}
-      DATABASE_URL: "postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres-server:5432/${POSTGRES_DB}"
+      OTP_SECRET: ${OTP_SECRET:-t0ps3cr3t}
+      DATABASE_URL: "postgresql://${POSTGRES_USER:-legislative_user}:${POSTGRES_PASSWORD:-legislative_password}@postgres-server:5432/${POSTGRES_DB:-legislative_db}"
     ports:
       - "5000:5000"
     depends_on:
-      - postgres-server
+      postgres-server:
+        condition: service_healthy
 
   fastapi-server:
     container_name: ls-fastapi-server
@@ -45,8 +58,14 @@ services:
     container_name: ls-postgres-server
     image: postgres:alpine
     environment:
-      POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB:-legislative_db}
+      POSTGRES_USER: ${POSTGRES_USER:-legislative_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-legislative_password}
     volumes:
-      - "./psql_data:/var/lib/postgresql/data"
+      - "./psql_data:/var/lib/postgresql"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-legislative_user} -d ${POSTGRES_DB:-legislative_db}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
