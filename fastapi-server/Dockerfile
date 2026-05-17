@@ -16,8 +16,14 @@ RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --locked --no-dev && \
     uv pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
 
+# Download NLTK data
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv run python -c "import nltk; nltk.download('punkt'); nltk.download('stopwords'); nltk.download('punkt_tab')"
+
 # Final image
 FROM python:3.13-slim-bookworm
+
+ENV NLTK_DATA=/home/nonroot/nltk_data
 
 # Setup a non-root user
 RUN groupadd --system --gid 999 nonroot \
@@ -28,6 +34,7 @@ WORKDIR /app
 
 # Copy the application from the builder
 COPY --from=builder --chown=nonroot:nonroot /app /app
+COPY --from=builder --chown=nonroot:nonroot /root/nltk_data /home/nonroot/nltk_data
 
 # Place executables in the environment at the front of the path
 ENV PATH="/app/.venv/bin:$PATH"

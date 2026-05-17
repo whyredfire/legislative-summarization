@@ -1,5 +1,3 @@
-from contextlib import asynccontextmanager
-
 from fastapi import FastAPI, HTTPException
 from fastapi.encoders import jsonable_encoder
 from fastapi.middleware.cors import CORSMiddleware
@@ -7,21 +5,7 @@ from fastapi.responses import JSONResponse
 
 from routers import core
 
-
-@asynccontextmanager
-async def lifespan(app: FastAPI):
-    # On startup
-    import nltk
-
-    nltk.download("punkt")
-    nltk.download("stopwords")
-    nltk.download("punkt_tab")
-
-    yield
-    # On shutdown
-
-
-app = FastAPI(lifespan=lifespan)
+app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
