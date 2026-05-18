@@ -9,7 +9,7 @@ spec:
       kind: Gateway
       sectionName: websecure
   hostnames:
-    - "legislative.whyredfire.dev"
+    - "legislative-summarization.whyredfire.dev"
   rules:
     - matches:
         - path:
