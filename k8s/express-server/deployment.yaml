@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: express-server
-          image: ghcr.io/whyredfire/ls-express-server:0d4c9a5ea09f6e24efb06e77c91caafbfb1c4241
+          image: ghcr.io/whyredfire/ls-express-server:bff683a5849d5ebbad41210816ea2743d7498e97
           ports:
             - containerPort: 5000
           env:
