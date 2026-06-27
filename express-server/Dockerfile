@@ -8,7 +8,8 @@ RUN adduser -D -u 1001 expressjs
 COPY --chown=expressjs:expressjs bun.lock package.json ./
 RUN bun install --production
 
-COPY --chown=expressjs:expressjs prisma .
+COPY --chown=expressjs:expressjs prisma ./prisma/
+COPY --chown=expressjs:expressjs prisma.config.js ./
 RUN bunx prisma generate
 
 COPY --chown=expressjs:expressjs . .
