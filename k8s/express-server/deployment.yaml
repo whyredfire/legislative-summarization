@@ -23,7 +23,7 @@ spec:
             - name: DATABASE_URL
               valueFrom:
                 secretKeyRef:
-                  name: cnpg-cluster-app
+                  name: legislative-db-app
                   key: uri
             - name: FASTAPI_SERVER
               value: "http://fastapi-server:8000/"

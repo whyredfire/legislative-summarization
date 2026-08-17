@@ -1,0 +1,14 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: legislative-db
+spec:
+  instances: 1
+  imageName: ghcr.io/cloudnative-pg/postgresql:18
+  enablePDB: false
+  bootstrap:
+    initdb:
+      database: app
+      owner: app
+  storage:
+    size: 500Mi
