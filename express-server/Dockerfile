@@ -21,4 +21,4 @@ USER expressjs
 HEALTHCHECK --interval=10s --timeout=5s --retries=3 --start-period=10s \
   CMD wget --no-verbose --tries=1 --spider http://localhost:5000/health || exit 1
 
-CMD ["sh", "-c", "bunx prisma migrate deploy && bun run seed.js && bun run index.js"]
+CMD ["bun", "run", "index.js"]

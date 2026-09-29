@@ -6,6 +6,31 @@ spec:
   replicas: 1
   template:
     spec:
+      initContainers:
+        - name: migrate
+          image: ghcr.io/whyredfire/ls-express-server:2e978c423446dcb75d3e2fd5b00e5ca369c18df8
+          command: ["sh", "-c", "bunx prisma migrate deploy && bun run seed.js"]
+          env:
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: db-credentials
+                  key: uri
+            - name: HASH_SALT
+              valueFrom:
+                secretKeyRef:
+                  name: auth-secret
+                  key: HASH_SALT
+            - name: TEMP_USER_MAIL
+              valueFrom:
+                configMapKeyRef:
+                  name: temp-user-config
+                  key: TEMP_USER_MAIL
+            - name: TEMP_USER_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  name: temp-user-config
+                  key: TEMP_USER_PASSWORD
       containers:
         - name: express-server
           image: ghcr.io/whyredfire/ls-express-server:2e978c423446dcb75d3e2fd5b00e5ca369c18df8

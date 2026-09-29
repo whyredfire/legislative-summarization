@@ -22,6 +22,21 @@ services:
       postgres-server:
         condition: service_healthy
 
+  express-migrate:
+    container_name: ls-express-migrate
+    build:
+      context: ./express-server
+      dockerfile: Dockerfile
+    command: ["sh", "-c", "bunx prisma migrate deploy && bun run seed.js"]
+    environment:
+      HASH_SALT: ${HASH_SALT:-t0ps3cr3t}
+      TEMP_USER_MAIL: ${TEMP_USER_MAIL:-demo@example.com}
+      TEMP_USER_PASSWORD: ${TEMP_USER_PASSWORD:-demo123}
+      DATABASE_URL: "postgresql://${POSTGRES_USER:-legislative_user}:${POSTGRES_PASSWORD:-legislative_password}@postgres-server:5432/${POSTGRES_DB:-legislative_db}"
+    depends_on:
+      postgres-server:
+        condition: service_healthy
+
   express-server:
     container_name: ls-express-server
     build:
@@ -42,8 +57,8 @@ services:
     ports:
       - "5000:5000"
     depends_on:
-      postgres-server:
-        condition: service_healthy
+      express-migrate:
+        condition: service_completed_successfully
 
   fastapi-server:
     container_name: ls-fastapi-server

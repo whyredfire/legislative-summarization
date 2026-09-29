@@ -97,7 +97,7 @@ jobs:
       - name: Update image tags
         run: |
           yq -i ".spec.template.spec.containers[0].image = \"ghcr.io/whyredfire/ls-next-server:${GITHUB_SHA}\"" k8s/next-server/deployment.yaml
-          yq -i ".spec.template.spec.containers[0].image = \"ghcr.io/whyredfire/ls-express-server:${GITHUB_SHA}\"" k8s/express-server/deployment.yaml
+          yq -i "(.spec.template.spec.initContainers[0].image, .spec.template.spec.containers[0].image) = \"ghcr.io/whyredfire/ls-express-server:${GITHUB_SHA}\"" k8s/express-server/deployment.yaml
           yq -i ".spec.template.spec.containers[0].image = \"ghcr.io/whyredfire/ls-fastapi-server:${GITHUB_SHA}\"" k8s/fastapi-server/deployment.yaml
 
       - name: Commit to repo

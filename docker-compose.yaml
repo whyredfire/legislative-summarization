@@ -11,6 +11,17 @@ services:
       postgres-server:
         condition: service_healthy
 
+  express-migrate:
+    container_name: ls-express-migrate
+    image: ghcr.io/whyredfire/ls-express-server:latest
+    command: ["sh", "-c", "bunx prisma migrate deploy && bun run seed.js"]
+    environment:
+      HASH_SALT: ${HASH_SALT}
+      DATABASE_URL: "postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres-server:5432/${POSTGRES_DB}"
+    depends_on:
+      postgres-server:
+        condition: service_healthy
+
   express-server:
     container_name: ls-express-server
     image: ghcr.io/whyredfire/ls-express-server:latest
@@ -27,8 +38,8 @@ services:
     ports:
       - "5000:5000"
     depends_on:
-      postgres-server:
-        condition: service_healthy
+      express-migrate:
+        condition: service_completed_successfully
 
   fastapi-server:
     container_name: ls-fastapi-server
