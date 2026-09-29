@@ -4,6 +4,7 @@ metadata:
   name: express-server
 spec:
   replicas: 1
+  revisionHistoryLimit: 2
   template:
     spec:
       initContainers:
