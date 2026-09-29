@@ -8,7 +8,7 @@ spec:
     spec:
       initContainers:
         - name: migrate
-          image: ghcr.io/whyredfire/ls-express-server:2e978c423446dcb75d3e2fd5b00e5ca369c18df8
+          image: ghcr.io/whyredfire/ls-express-server:f2c2515adfa41210ab9b169193702df79adbc0b9
           command: ["sh", "-c", "bunx prisma migrate deploy && bun run seed.js"]
           env:
             - name: DATABASE_URL
@@ -33,7 +33,7 @@ spec:
                   key: TEMP_USER_PASSWORD
       containers:
         - name: express-server
-          image: ghcr.io/whyredfire/ls-express-server:2e978c423446dcb75d3e2fd5b00e5ca369c18df8
+          image: ghcr.io/whyredfire/ls-express-server:f2c2515adfa41210ab9b169193702df79adbc0b9
           ports:
             - containerPort: 5000
           env:
