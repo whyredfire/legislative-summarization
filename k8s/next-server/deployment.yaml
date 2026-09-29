@@ -9,7 +9,7 @@ spec:
     spec:
       containers:
         - name: next-server
-          image: ghcr.io/whyredfire/ls-next-server:f2c2515adfa41210ab9b169193702df79adbc0b9
+          image: ghcr.io/whyredfire/ls-next-server:2efffa5ad744b37df721f95a21e18144319b5bf8
           ports:
             - containerPort: 3000
           env:
