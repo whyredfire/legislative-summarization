@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: next-server
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: legislative-summarization
+      app.kubernetes.io/instance: legislative-summarization
+      app.kubernetes.io/component: next-server
+  # API calls are made by the browser through the gateway, so it makes no connections of its own
+  policyTypes: [Ingress, Egress]
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: traefik
+      ports:
+        - port: 3000

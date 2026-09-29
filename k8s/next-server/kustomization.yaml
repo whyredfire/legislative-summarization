@@ -3,7 +3,15 @@ kind: Kustomization
 labels:
   - pairs:
       app.kubernetes.io/component: next-server
-    includeSelectors: true
+    includeTemplates: true
+    fields:
+      - path: spec/selector/matchLabels
+        kind: Deployment
+        create: true
+      - path: spec/selector
+        kind: Service
+        create: true
 resources:
   - deployment.yaml
   - service.yaml
+  - networkpolicy.yaml

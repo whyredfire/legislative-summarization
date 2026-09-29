@@ -4,7 +4,15 @@ labels:
   - pairs:
       app.kubernetes.io/name: legislative-summarization
       app.kubernetes.io/instance: legislative-summarization
-    includeSelectors: true
+    includeTemplates: true
+    # Explicit selector fields; includeSelectors would also rewrite NetworkPolicy peers
+    fields:
+      - path: spec/selector/matchLabels
+        kind: Deployment
+        create: true
+      - path: spec/selector
+        kind: Service
+        create: true
   - pairs:
       app.kubernetes.io/managed-by: kustomize
     includeTemplates: true

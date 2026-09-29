@@ -3,7 +3,14 @@ kind: Kustomization
 labels:
   - pairs:
       app.kubernetes.io/component: express-server
-    includeSelectors: true
+    includeTemplates: true
+    fields:
+      - path: spec/selector/matchLabels
+        kind: Deployment
+        create: true
+      - path: spec/selector
+        kind: Service
+        create: true
 resources:
   - deployment.yaml
   - service.yaml
@@ -12,3 +19,4 @@ resources:
   - mail-secret.yaml
   - db-credentials.yaml
   - configmap.yaml
+  - networkpolicy.yaml
