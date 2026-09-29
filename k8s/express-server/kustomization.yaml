@@ -6,4 +6,5 @@ resources:
   - auth-secret.yaml
   - gemini-secret.yaml
   - mail-secret.yaml
+  - db-credentials.yaml
   - configmap.yaml
