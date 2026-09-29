@@ -1,5 +1,13 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
+labels:
+  - pairs:
+      app.kubernetes.io/name: legislative-summarization
+      app.kubernetes.io/instance: legislative-summarization
+    includeSelectors: true
+  - pairs:
+      app.kubernetes.io/managed-by: kustomize
+    includeTemplates: true
 resources:
   - next-server
   - express-server

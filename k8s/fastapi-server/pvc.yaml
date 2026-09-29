@@ -2,8 +2,6 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: fastapi-model-cache
-  labels:
-    app: fastapi-server
 spec:
   accessModes:
     - ReadWriteOnce
