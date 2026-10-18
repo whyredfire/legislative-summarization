@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Legislative Summarization (archived)</title>
+        <meta
+            name="description"
+            content="Legislative Summarization: summarize legal documents with the help of AI. An archived college project."
+        />
+        <link rel="stylesheet" href="style.css" />
+    </head>
+    <body>
+        <main>
+            <p class="notice">
+                Archived. I built this in college while learning web
+                development, and it has served its purpose. The live app is
+                down and the project is no longer maintained.
+            </p>
+
+            <h1>Legislative Summarization</h1>
+            <p class="tagline">
+                Summarize legal documents with the help of AI, and save time
+                and effort.
+            </p>
+
+            <h2>Features</h2>
+            <ul>
+                <li>
+                    Summarize pasted text or an uploaded PDF or plain-text
+                    document
+                </li>
+                <li>
+                    Extractive and abstractive summaries, the latter from
+                    <a href="https://huggingface.co/whyredfire/legal-bart-summarizer">a BART model fine-tuned on LegalSum</a>
+                </li>
+                <li>Export summaries to PDF, and keep a history of past ones</li>
+                <li>
+                    Accounts with email OTP verification, password reset and
+                    account deletion
+                </li>
+                <li>Dark and light themes</li>
+            </ul>
+
+            <h2>Stack</h2>
+            <ul>
+                <li>
+                    <strong>Frontend:</strong> Next.js, React, TypeScript,
+                    Tailwind
+                </li>
+                <li>
+                    <strong>API:</strong> Bun and Express for auth (JWT) and
+                    storage, Gemini for detailed summaries
+                </li>
+                <li>
+                    <strong>Model server:</strong> FastAPI serving the
+                    <a href="https://huggingface.co/whyredfire/legal-bart-summarizer">legal-bart-summarizer</a> model with
+                    Hugging Face Transformers and NLTK
+                </li>
+                <li>
+                    <strong>Storage:</strong> PostgreSQL with Prisma
+                </li>
+                <li><strong>Auth:</strong> JWT sessions</li>
+            </ul>
+
+            <h2>Setup</h2>
+            <ul>
+                <li>
+                    <strong>Containers:</strong> one image per service, built
+                    from Dockerfiles. <code>docker-compose up</code> runs the
+                    whole stack locally.
+                </li>
+                <li>
+                    <strong>CI/CD:</strong> a GitHub Actions workflow builds
+                    multi-arch images (amd64/arm64) with SBOMs, pushes them to
+                    GHCR, then commits the new image tags to the k8s manifests.
+                </li>
+                <li>
+                    <strong>Kubernetes:</strong> Kustomize manifests for the
+                    three services, secrets stored as SealedSecrets, a PVC for the
+                    model cache, and an HTTPRoute behind a Traefik gateway.
+                </li>
+                <li>
+                    <strong>Network policies:</strong> default-deny with
+                    explicit allows. Only the gateway reaches the frontend and
+                    API, only the API reaches the model server and PostgreSQL,
+                    and egress is limited to DNS and the few external services
+                    each pod needs (mail, Gemini, model downloads).
+                </li>
+            </ul>
+
+            <h2>Screenshots</h2>
+
+            <figure>
+                <img src="img/landing_dark.png" alt="Landing page, dark theme" loading="lazy" />
+                <figcaption>Landing page, dark</figcaption>
+            </figure>
+            <figure>
+                <img src="img/landing_light.png" alt="Landing page, light theme" loading="lazy" />
+                <figcaption>Landing page, light</figcaption>
+            </figure>
+            <figure>
+                <img src="img/signin.png" alt="Sign in page" loading="lazy" />
+                <figcaption>Sign in</figcaption>
+            </figure>
+            <figure>
+                <img src="img/summarize_initial.png" alt="Empty summarizer" loading="lazy" />
+                <figcaption>Summarizer</figcaption>
+            </figure>
+            <figure>
+                <img src="img/summarize_ongoing.png" alt="Summary in progress" loading="lazy" />
+                <figcaption>Summarizing</figcaption>
+            </figure>
+            <figure>
+                <img src="img/summarize_finished.png" alt="Finished extractive summary with PDF download" loading="lazy" />
+                <figcaption>Finished summary, with PDF export</figcaption>
+            </figure>
+
+            <footer>
+                <a href="https://github.com/whyredfire/legislative-summarization">Source on GitHub</a>
+                · <a href="https://huggingface.co/whyredfire/legal-bart-summarizer">Model on Hugging Face</a> · MIT licensed · Made by Team Legislative Summarization
+            </footer>
+        </main>
+        <script src="script.js"></script>
+    </body>
+</html>
