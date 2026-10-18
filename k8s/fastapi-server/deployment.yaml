@@ -9,7 +9,7 @@ spec:
     spec:
       containers:
         - name: fastapi-server
-          image: ghcr.io/whyredfire/ls-fastapi-server:2efffa5ad744b37df721f95a21e18144319b5bf8
+          image: ghcr.io/whyredfire/ls-fastapi-server:21527e00ad3454d519da655281c37d27abd84d07
           ports:
             - containerPort: 8000
           env:
